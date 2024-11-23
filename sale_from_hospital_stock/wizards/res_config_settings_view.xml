@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  @author: Alexis de Lattre <alexis.delattre@akretion.com>
+-->
+
+<odoo>
+
+<record id="res_config_settings_view_form" model="ir.ui.view">
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+        <xpath expr="//div[@data-key='stock']" position="inside">
+            <h2>Hospital stock</h2>
+            <div class="row mt16 o_settings_container" name="hospital_stock_setting_container">
+                <div class="o_setting_left_pane" />
+                <div class="o_setting_right_pane">
+                    <div class="row">
+                        <label for="deposit_stock_out_type_id" class="col-md-4"/>
+                        <field name="deposit_stock_out_type_id" context="{'default_code': 'outgoing', 'default_name': 'Ventes depuis dépôts', 'default_use_create_lots': False, 'show_operations': True}"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </field>
+</record>
+
+</odoo>

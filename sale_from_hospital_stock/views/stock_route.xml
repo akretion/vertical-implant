@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 Akretion France (https://www.akretion.com/)
+  @author: Alexis de Lattre <alexis.delattre@akretion.com>
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+<odoo>
+
+<record id="stock_location_route_form_view" model="ir.ui.view">
+    <field name="model">stock.route</field>
+    <field name="inherit_id" ref="stock.stock_location_route_form_view"/>
+    <field name="arch" type="xml">
+        <field name="active" position="before">
+            <field name="ship_from_hospital_deposit"/>
+            <field name="partner_id" attrs="{'invisible': [('ship_from_hospital_deposit', '=', False)]}"/>
+        </field>
+    </field>
+</record>
+
+<record id="stock_location_route_tree" model="ir.ui.view">
+    <field name="model">stock.route</field>
+    <field name="inherit_id" ref="stock.stock_location_route_tree"/>
+    <field name="arch" type="xml">
+        <field name="company_id" position="before">
+            <field name="ship_from_hospital_deposit" optional="show"/>
+            <field name="partner_id" optional="show" attrs="{'invisible': [('ship_from_hospital_deposit', '=', False)]}"/>
+        </field>
+    </field>
+</record>
+
+</odoo>

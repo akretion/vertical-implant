@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 Akretion France (https://www.akretion.com/)
+  @author: Alexis de Lattre <alexis.delattre@akretion.com>
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+
+<odoo>
+
+<record id="route_sale_order_form" model="ir.ui.view">
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale_order_route.view_order_form_inherit_sale_stock"/>
+    <field name="arch" type="xml">
+        <field name="route_id" position="after">
+            <field name="ship_from_hospital_deposit" invisible="1"/>
+            <field name="refill_picking_count" invisible="1"/>
+            <field name="refill_deposit" attrs="{'invisible': [('ship_from_hospital_deposit', '=', False)]}"/>
+        </field>
+        <div name="button_box" position="inside">
+            <button name="action_view_refill_pickings"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-refresh"
+                    attrs="{'invisible': [('refill_picking_count', '=', 0)]}">
+                <field name="refill_picking_count" widget="statinfo" string="Ré-appro"/>
+            </button>
+        </div>
+    </field>
+</record>
+
+</odoo>
