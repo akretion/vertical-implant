@@ -9,15 +9,15 @@ from odoo.exceptions import ValidationError
 class StockLocation(models.Model):
     _inherit = 'stock.location'
 
-    hospital = fields.Boolean('Hospital Deposit')
+    hospital_type = fields.Selection(selection=[('deposit', "Dépôt"), ('loan', 'Prêt')], string='Hospital Location')
     partner_id = fields.Many2one(
         'res.partner', string='Partner', check_company=True,
         domain=[('parent_id', '=', False)], ondelete='restrict')
 
-    @api.constrains('hospital', 'usage')
-    def _check_hospital(self):
+    @api.constrains('hospital_type', 'usage')
+    def _check_hospital_type(self):
         for loc in self:
-            if loc.hospital and loc.usage != 'internal':
+            if loc.hospital_type and loc.usage != 'internal':
                 raise ValidationError(_(
-                    "For stock location '%s', the option 'Hospital Deposit' is enabled "
+                    "For stock location '%s', the option 'Hospital Type' is enabled "
                     "although it is not an internal location.") % loc.display_name)

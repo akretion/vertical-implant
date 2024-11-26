@@ -11,3 +11,6 @@ class ResCompany(models.Model):
     deposit_stock_out_type_id = fields.Many2one(
         'stock.picking.type', string='Opération de stock pour vente depuis dépôt',
         ondelete='restrict', check_company=True)
+    loan_stock_out_type_id = fields.Many2one(
+        'stock.picking.type', string='Opération de stock pour vente depuis prêt',
+        ondelete='restrict', check_company=True)

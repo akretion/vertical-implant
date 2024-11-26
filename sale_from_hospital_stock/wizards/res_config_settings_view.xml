@@ -17,6 +17,8 @@
                     <div class="row">
                         <label for="deposit_stock_out_type_id" class="col-md-4"/>
                         <field name="deposit_stock_out_type_id" context="{'default_code': 'outgoing', 'default_name': 'Ventes depuis dépôts', 'default_use_create_lots': False, 'show_operations': True}"/>
+                        <label for="loan_stock_out_type_id" class="col-md-4"/>
+                        <field name="loan_stock_out_type_id" context="{'default_code': 'outgoing', 'default_name': 'Ventes depuis prêt', 'default_use_create_lots': False, 'show_operations': True}"/>
                     </div>
                 </div>
             </div>
