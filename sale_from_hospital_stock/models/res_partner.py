@@ -97,7 +97,6 @@ class ResPartner(models.Model):
         deposit_route = self.env['stock.route'].create(deposit_route_vals)
         self.message_post(
             body=f"Route <a href=# data-oe-model=stock.route data-oe-id={deposit_route.id}>{deposit_route.display_name}</a> created.")
-        import pdb; pdb.set_trace();
         deposit_delivery_picking_type = self.env["stock.picking.type"].create({
             "name": f"Send Deposit to hospital - {partner_name}",
             "code": "internal",

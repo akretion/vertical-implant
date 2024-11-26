@@ -5,6 +5,7 @@ from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError
 import logging
 logger = logging.getLogger(__name__)
+from collections import defaultdict
 
 
 class SaleOrder(models.Model):
@@ -95,7 +96,7 @@ class SaleOrder(models.Model):
             assert deposit_location.company_id.id == company_id
             assert deposit_location.hospital
         elif self.ship_from_hospital_loan:
-            deposit_location = self.warehouse_id.lot_stock_id.id
+            deposit_location = self.warehouse_id.lot_stock_id
         move_ids = []
         origin = _('Refill deposit %s') % self.name
         for l in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'product'):
@@ -127,7 +128,78 @@ class SaleOrder(models.Model):
     def _generate_loan_return(self):
         self.ensure_one()
         assert self.route_id.ship_from_hospital_loan
-
+        spo = self.env['stock.picking']
+        existing_return_pickings = spo.search([
+            ('state', 'not in', ('done', 'cancel')),
+            ('return_sale_id', '=', self.id),
+            ])
+        if existing_return_pickings:
+            raise UserError(
+                "Il existe déjà des bons de transfert de retour de "
+                "prêt (%s) liés à cette commande %s. "
+                "Vous devez d'abord les annuler."
+                % (', '.join([p.name for p in existing_return_pickings]), self.name))
+        company_id = self.company_id.id
+        loan_location = self.route_id.rule_ids[0].location_src_id
+        lot_stock_id = self.warehouse_id.lot_stock_id.id
+        move_ids = []
+        origin = _('Return loan %s') % self.name
+        location_content = self.env["stock.quant"].read_group(
+            domain=[("location_id", "=", loan_location.id)],
+            fields=[
+                "product_id",
+                "quantity:sum",
+            ],
+            groupby=["product_id"],
+            orderby="id",
+            lazy=False,
+        )
+        lines = self.env["sale.order.line"].read_group(
+            domain=[
+                ("order_id", "=", self.id),
+                ("display_type", "=", False),
+                ("product_id.type", "=", "product"),
+            ],
+            fields=[
+                "product_id",
+                "product_uom_qty:sum",
+            ],
+            groupby=["product_id"],
+            orderby="id",
+            lazy=False,
+        )
+        lines = defaultdict(float)
+        for l in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'product'):
+            lines[l.product_id.id] += l.product_uom_qty
+        for group in location_content:
+            product = self.env["product.product"].browse(group["product_id"][0]).exists()
+            qty = group.get("quantity") - lines[product.id]
+            if not qty:
+                continue
+            move_ids.append(Command.create({
+                'company_id': company_id,
+                'product_id': product.id,
+                'product_uom_qty': qty,
+                'product_uom': product.uom_id.id,
+                'name': product.display_name,
+                'location_id': loan_location.id,
+                'location_dest_id': lot_stock_id,
+                'warehouse_id': self.warehouse_id.id,
+                'origin': origin,
+                }))
+        picking = spo.create({
+            'company_id': company_id,
+            'partner_id': self.partner_shipping_id.id,
+            "sale_id": False,
+            "return_sale_id": self.id,
+            'origin': origin,
+            "move_type": "direct",
+            'location_id': loan_location.id,
+            'location_dest_id': lot_stock_id,
+            'picking_type_id': self.warehouse_id.int_type_id.id,
+            'move_ids': move_ids,
+            })
+        picking.action_confirm()
 
     def _action_confirm(self):
         for order in self:
