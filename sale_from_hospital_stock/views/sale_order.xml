@@ -13,7 +13,9 @@
     <field name="arch" type="xml">
         <field name="route_id" position="after">
             <field name="ship_from_hospital_deposit" invisible="1"/>
+            <field name="ship_from_hospital_loan" invisible="1"/>
             <field name="refill_picking_count" invisible="1"/>
+            <field name="return_picking_count" invisible="1"/>
             <field name="refill_deposit" attrs="{'invisible': [('ship_from_hospital_deposit', '=', False)]}"/>
         </field>
         <div name="button_box" position="inside">
@@ -23,6 +25,13 @@
                     icon="fa-refresh"
                     attrs="{'invisible': [('refill_picking_count', '=', 0)]}">
                 <field name="refill_picking_count" widget="statinfo" string="Ré-appro"/>
+            </button>
+            <button name="action_view_return_pickings"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-refresh"
+                    attrs="{'invisible': [('return_picking_count', '=', 0)]}">
+                <field name="return_picking_count" widget="statinfo" string="Retour prêt"/>
             </button>
         </div>
     </field>
