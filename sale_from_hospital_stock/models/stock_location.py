@@ -9,15 +9,22 @@ from odoo.exceptions import ValidationError
 class StockLocation(models.Model):
     _inherit = 'stock.location'
 
-    hospital = fields.Boolean('Hospital Deposit')
+    # Inspired by detailed_type from product.template... but a bit different because not required
+    detailed_usage = fields.Selection([
+        ('deposit', 'Deposit')], string="Detailed Location Type")
+    usage = fields.Selection(compute="_compute_usage", store=True, readonly=False, precompute=True)
     partner_id = fields.Many2one(
         'res.partner', string='Partner', check_company=True,
         domain=[('parent_id', '=', False)], ondelete='restrict')
 
-    @api.constrains('hospital', 'usage')
-    def _check_hospital(self):
-        for loc in self:
-            if loc.hospital and loc.usage != 'internal':
-                raise ValidationError(_(
-                    "For stock location '%s', the option 'Hospital Deposit' is enabled "
-                    "although it is not an internal location.") % loc.display_name)
+    def _detailed_usage_mapping(self):
+        return {
+            "deposit": "internal",
+            }
+
+    @api.depends('detailed_usage')
+    def _compute_usage(self):
+        usage_mapping = self._detailed_usage_mapping()
+        for location in self:
+            if location.detailed_usage:
+                location.usage = usage_mapping[location.detailed_usage]

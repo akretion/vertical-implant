@@ -10,9 +10,11 @@
     <field name="model">stock.location</field>
     <field name="inherit_id" ref="stock.view_location_form"/>
     <field name="arch" type="xml">
+        <field name="usage" position="before">
+            <field name="detailed_usage"/>
+        </field>
         <field name="usage" position="after">
-            <field name="hospital" attrs="{'invisible': [('usage', '!=', 'internal')]}"/>
-            <field name="partner_id" attrs="{'invisible': [('hospital', '=', False)]}"/>
+            <field name="partner_id" attrs="{'invisible': [('detailed_usage', '!=', 'deposit')]}"/>
         </field>
     </field>
 </record>
@@ -22,7 +24,7 @@
     <field name="inherit_id" ref="stock.view_location_tree2"/>
     <field name="arch" type="xml">
         <field name="usage" position="after">
-            <field name="hospital" attrs="{'invisible': [('hospital', '=', False)]}" optional="hide"/>
+            <field name="detailed_usage" attrs="{'invisible': [('detailed_usage', '!=', 'deposit')]}" optional="hide"/>
         </field>
     </field>
 </record>
@@ -33,7 +35,7 @@
     <field name="arch" type="xml">
         <filter name="supplier" position="after">
             <separator/>
-            <filter name="hospital" string="Hospital Deposit" domain="[('hospital', '=', True)]"/>
+            <filter name="detailed_usage_deposit" string="Deposit" domain="[('detailed_usage', '=', 'deposit')]"/>
         </filter>
     </field>
 </record>

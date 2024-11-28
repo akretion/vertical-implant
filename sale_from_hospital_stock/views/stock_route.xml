@@ -11,8 +11,8 @@
     <field name="inherit_id" ref="stock.stock_location_route_form_view"/>
     <field name="arch" type="xml">
         <field name="active" position="before">
-            <field name="ship_from_hospital_deposit"/>
-            <field name="partner_id" attrs="{'invisible': [('ship_from_hospital_deposit', '=', False)]}"/>
+            <field name="detailed_type"/>
+            <field name="partner_id" attrs="{'invisible': [('detailed_type', '!=', 'ship_from_deposit')]}"/>
         </field>
     </field>
 </record>
@@ -22,8 +22,8 @@
     <field name="inherit_id" ref="stock.stock_location_route_tree"/>
     <field name="arch" type="xml">
         <field name="company_id" position="before">
-            <field name="ship_from_hospital_deposit" optional="show"/>
-            <field name="partner_id" optional="show" attrs="{'invisible': [('ship_from_hospital_deposit', '=', False)]}"/>
+            <field name="detailed_type" optional="show"/>
+            <field name="partner_id" optional="show" attrs="{'invisible': [('detailed_type', '!=', 'ship_from_deposit')]}"/>
         </field>
     </field>
 </record>

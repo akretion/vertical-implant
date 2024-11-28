@@ -12,8 +12,8 @@
     <field name="inherit_id" ref="base.view_partner_form"/>
     <field name="arch" type="xml">
         <xpath expr="//page[@name='sales_purchases']/group" position="inside">
-            <group name="hospital-stock" string="Hospital Stock" attrs="{'invisible': [('parent_id', '!=', False)]}">
-                <button name="button_create_deposit_route" type="object" string="Create Hospital Stock" attrs="{'invisible': [('deposit_route_id', '!=', False)]}" colspan="2" groups="stock.group_stock_manager"/>
+            <group name="deposit" string="Deposit" attrs="{'invisible': [('parent_id', '!=', False)]}">
+                <button name="button_create_deposit_route" type="object" string="Create Deposit" attrs="{'invisible': [('deposit_route_id', '!=', False)]}" colspan="2" groups="stock.group_stock_manager"/>
                 <field name="deposit_route_id"/>
                 <field name="deposit_location_id"/>
             </group>

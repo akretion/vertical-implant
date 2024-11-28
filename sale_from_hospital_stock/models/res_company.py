@@ -9,5 +9,5 @@ class ResCompany(models.Model):
     _inherit = 'res.company'
 
     deposit_stock_out_type_id = fields.Many2one(
-        'stock.picking.type', string='Opération de stock pour vente depuis dépôt',
+        'stock.picking.type', string='Picking Type for Sale Orders from Deposit',
         ondelete='restrict', check_company=True)

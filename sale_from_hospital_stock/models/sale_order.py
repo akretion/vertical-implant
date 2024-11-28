@@ -13,15 +13,15 @@ class SaleOrder(models.Model):
     # inherit the field of sale_order_route
     route_id = fields.Many2one(
         domain="[('partner_id', 'in', (commercial_partner_id, False)), ('company_id', 'in', (company_id, False)), ('sale_selectable', '=', True)]")
-    ship_from_hospital_deposit = fields.Boolean(related='route_id.ship_from_hospital_deposit', store=True)
+    route_detailed_type = fields.Selection(related='route_id.detailed_type', store=True)
     refill_deposit = fields.Boolean(
-        default=True, string='Ré-approvisionnement du dépôt', tracking=True,
+        default=True, string='Refill Deposit', tracking=True,
         readonly=True,
         states={'draft': [('readonly', False)], 'sent': [('readonly', False)]})
     refill_picking_ids = fields.One2many(
-        'stock.picking', 'refill_sale_id', string='Bons de réapprovisionnement du dépôt')
+        'stock.picking', 'refill_sale_id', string='Refill Deposit Pickings')
     refill_picking_count = fields.Integer(
-        compute='_compute_refill_picking_count', string='Nb de bons de réapprovisionnement du dépôt')
+        compute='_compute_refill_picking_count', string='Number of Refill Deposit Pickings')
 
     @api.depends('refill_picking_ids')
     def _compute_refill_picking_count(self):
@@ -48,25 +48,27 @@ class SaleOrder(models.Model):
 
     def _generate_refill_picking(self):
         self.ensure_one()
-        assert self.route_id.ship_from_hospital_deposit
+        assert self.route_id.detailed_type == 'ship_from_deposit'
         spo = self.env['stock.picking']
         existing_refill_pickings = spo.search([
             ('state', 'not in', ('done', 'cancel')),
             ('refill_sale_id', '=', self.id),
             ])
         if existing_refill_pickings:
-            raise UserError(
-                "Il existe déjà des bons de transfert de ré-approvisionnement de "
-                "dépôt (%s) liés à cette commande %s. "
-                "Vous devez d'abord les annuler."
-                % (', '.join([p.name for p in existing_refill_pickings]), self.name))
+            raise UserError(_(
+                "Refill deposit pickings (%(pickings)s) linked to order %(order)s already exists. "
+                "You must cancel them and try again.",
+                pickings=', '.join([p.name for p in existing_refill_pickings]),
+                order=self.name))
         company_id = self.company_id.id
         lot_stock_id = self.warehouse_id.lot_stock_id.id
         deposit_location = self.route_id.rule_ids[0].location_src_id
         assert deposit_location.company_id.id == company_id
-        assert deposit_location.hospital
+        assert deposit_location.detailed_usage == 'deposit'
         move_ids = []
-        origin = _('Refill deposit %s') % self.name
+        picking_origin = self.name
+        if self.client_order_ref:
+            picking_origin = f"{self.name} / {self.client_order_ref}"
         for l in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'product'):
             move_ids.append(Command.create({
                 'company_id': company_id,
@@ -77,14 +79,14 @@ class SaleOrder(models.Model):
                 'location_id': lot_stock_id,
                 'location_dest_id': deposit_location.id,
                 'warehouse_id': self.warehouse_id.id,
-                'origin': origin,
+                'origin': _('Refill Deposit %s') % self.name,
                 }))
         picking = spo.create({
             'company_id': company_id,
             'partner_id': self.partner_shipping_id.id,
             "sale_id": False,
             "refill_sale_id": self.id,
-            'origin': origin,
+            'origin': picking_origin,
             "move_type": "direct",
             'location_id': lot_stock_id,
             'location_dest_id': deposit_location.id,
@@ -95,7 +97,7 @@ class SaleOrder(models.Model):
 
     def _action_confirm(self):
         for order in self:
-            if order.ship_from_hospital_deposit and order.refill_deposit:
+            if order.route_detailed_type == 'ship_from_deposit' and order.refill_deposit:
                 order._generate_refill_picking()
         return super()._action_confirm()
 
