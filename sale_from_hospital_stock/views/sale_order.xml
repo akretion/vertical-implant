@@ -22,7 +22,7 @@
                     class="oe_stat_button"
                     icon="fa-refresh"
                     attrs="{'invisible': [('refill_picking_count', '=', 0)]}">
-                <field name="refill_picking_count" widget="statinfo" string="Ré-appro"/>
+                <field name="refill_picking_count" widget="statinfo" string="Refill"/>
             </button>
         </div>
     </field>

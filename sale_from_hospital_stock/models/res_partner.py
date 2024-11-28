@@ -55,7 +55,7 @@ class ResPartner(models.Model):
         # create route
         existing_route = self.env['stock.route'].search(domain + [('detailed_type', '=', 'ship_from_deposit')], limit=1)
         if existing_route:
-            raise UserError(_("A route for sale from deposit already exists for partner %(partner)s: %(route)s.", partner=self.display_name, route=existing_route.display_name))
+            raise UserError(_("A route to ship from deposit already exists for partner %(partner)s: %(route)s.", partner=self.display_name, route=existing_route.display_name))
         pull_rule_deposit = {
             'name': _('From %s to Customers') % self.display_name,
             'company_id': company.id,

@@ -1,0 +1,282 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sale_from_hospital_stock
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-11-28 23:09+0000\n"
+"PO-Revision-Date: 2024-11-28 23:10+0000\n"
+"Last-Translator: Alexis de Lattre <alexis.delattre@akretion.com>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,help:sale_from_hospital_stock.field_stock_location__usage
+msgid ""
+"* Vendor Location: Virtual location representing the source location for "
+"products coming from your vendors\n"
+"* View: Virtual location used to create a hierarchical structures for your "
+"warehouse, aggregating its child locations ; can't directly contain "
+"products\n"
+"* Internal Location: Physical locations inside your own warehouses,\n"
+"* Customer Location: Virtual location representing the destination location "
+"for products sent to your customers\n"
+"* Inventory Loss: Virtual location serving as counterpart for inventory "
+"operations used to correct stock levels (Physical inventories)\n"
+"* Production: Virtual counterpart location for production operations: this "
+"location consumes the components and produces finished products\n"
+"* Transit Location: Counterpart location that should be used in inter-"
+"company or inter-warehouses operations"
+msgstr ""
+"* Emplacement fournisseur : emplacement virtuel représentant l'emplacement "
+"d'origine des produits provenant des fournisseurs\n"
+"* Vue : emplacement virtuel utilisé pour avoir une structure hiérarchique de "
+"votre entrepôt, agrégeant ses emplacements enfants ; ne peut directement "
+"contenir des produits\n"
+"* Emplacement interne : emplacements physiques au sein de vos entrepôts,\n"
+"* Emplacement client : emplacement virtuel représentant l'emplacement de "
+"destination des produits envoyés à vos clients\n"
+"* Perte d'inventaire : emplacement virtuel servant de contre-partie pour les "
+"opérations d'inventaire utilisées pour corriger les niveaux de stock "
+"(Inventaires physiques)\n"
+"* Production : emplacement virtuel servant de contre-partie pour les "
+"opérations de production : cet emplacement consomme les composants et "
+"produit les produits finis\n"
+"* Emplacement de transit : emplacement de contre-partie qui est utilisé lors "
+"des opérations entre sociétés ou entre entrepôts"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid "A deposit already exists for partner %(partner)s: %(location)s."
+msgstr "Un dépôt existe déjà pour le partenaire %(partner)s: %(location)s."
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid ""
+"A route to ship from deposit already exists for partner %(partner)s: "
+"%(route)s."
+msgstr ""
+"Une route de livraison depuis dépôt existe déjà pour le partenaire "
+"%(partner)s: %(route)s."
+
+#. module: sale_from_hospital_stock
+#: model:ir.model,name:sale_from_hospital_stock.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model,name:sale_from_hospital_stock.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configuration"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model,name:sale_from_hospital_stock.model_res_partner
+msgid "Contact"
+msgstr "Contact"
+
+#. module: sale_from_hospital_stock
+#: model_terms:ir.ui.view,arch_db:sale_from_hospital_stock.view_partner_form
+msgid "Create Deposit"
+msgstr "Créer un dépôt"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_res_partner__deposit_location_id
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_res_users__deposit_location_id
+#: model:ir.model.fields.selection,name:sale_from_hospital_stock.selection__stock_location__detailed_usage__deposit
+#: model_terms:ir.ui.view,arch_db:sale_from_hospital_stock.res_config_settings_view_form
+#: model_terms:ir.ui.view,arch_db:sale_from_hospital_stock.view_location_search
+#: model_terms:ir.ui.view,arch_db:sale_from_hospital_stock.view_partner_form
+msgid "Deposit"
+msgstr "Dépôt"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid "Deposit %s"
+msgstr "Dépôt %s"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid ""
+"Deposit <a href=# data-oe-model=stock.location data-oe-"
+"id=%(location_id)s>%(location_name)s</a> created."
+msgstr ""
+"Dépôt <a href=# data-oe-model=stock.location data-oe-"
+"id=%(location_id)s>%(location_name)s</a> créé."
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_location__detailed_usage
+msgid "Detailed Location Type"
+msgstr "Type d'emplacement détaillé"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_sale_order__route_detailed_type
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_route__detailed_type
+msgid "Detailed Type"
+msgstr "Type détaillé"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid "From %s to Customers"
+msgstr "De %s à Clients"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model,name:sale_from_hospital_stock.model_stock_location
+msgid "Inventory Locations"
+msgstr "Emplacements de stock"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model,name:sale_from_hospital_stock.model_stock_route
+msgid "Inventory Routes"
+msgstr "Routes logistiques"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_location__usage
+msgid "Location Type"
+msgstr "Type d'emplacement"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_sale_order__refill_picking_count
+msgid "Number of Refill Deposit Pickings"
+msgstr "Nombre de ré-approvisionnements du dépôt"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_location__partner_id
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_route__partner_id
+msgid "Partner"
+msgstr "Partenaire"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid "Picking Type for Orders from Deposit is not configured on company %s."
+msgstr ""
+"Le type de transfert pour les commandes depuis un dépôt n'est pas configuré pour la "
+"société %s."
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_res_company__deposit_stock_out_type_id
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_res_config_settings__deposit_stock_out_type_id
+msgid "Picking Type for Sale Orders from Deposit"
+msgstr "Type de transfert pour les commandes client à partir d'un dépôt"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_sale_order__refill_deposit
+msgid "Refill Deposit"
+msgstr "Réapprovisionnement du dépôt"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/sale_order.py:0
+#, python-format
+msgid "Refill Deposit %s"
+msgstr "Réapprovisionnement du dépôt %s"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_sale_order__refill_picking_ids
+msgid "Refill Deposit Pickings"
+msgstr "Bons de livraison pour le réapprovisionnement du dépôt"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/sale_order.py:0
+#, python-format
+msgid ""
+"Refill deposit pickings (%(pickings)s) linked to order %(order)s already "
+"exists. You must cancel them and try again."
+msgstr ""
+"Les bons de livraison pour le réapprovisionnement du dépôt (%(pickings)s) liés à la commande "
+"%(order)s existent déjà. Vous devez les annuler et réessayer."
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_sale_order__route_id
+msgid "Route"
+msgstr "Route"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid ""
+"Route <a href=# data-oe-model=stock.route data-oe-"
+"id=%(route_id)s>%(route_name)s</a> created."
+msgstr ""
+"Route &lt;a href=# data-oe-model=stock.route data-oe-id=%(route_id)s&gt;"
+"%(route_name)s</a> créée."
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_res_partner__deposit_route_id
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_res_users__deposit_route_id
+msgid "Route for Orders from Deposit"
+msgstr "Route pour les commandes depuis dépôt"
+
+#. module: sale_from_hospital_stock
+#: model_terms:ir.ui.view,arch_db:sale_from_hospital_stock.route_sale_order_form
+msgid "Refill"
+msgstr "Réapprovisionnement"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_picking__refill_sale_id
+msgid "Sale Order which Triggers the Refill"
+msgstr "Commande client qui déclenche le réapprovisionnement"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model,name:sale_from_hospital_stock.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields.selection,name:sale_from_hospital_stock.selection__stock_route__detailed_type__ship_from_deposit
+msgid "Ship From Deposit"
+msgstr "Livraison depuis dépôt"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid "Ship from %s"
+msgstr "Livraison depuis %s"
+
+#. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_picking__source_sale_id
+msgid "Source Sale"
+msgstr "Commande source"
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/stock_route.py:0
+#, python-format
+msgid ""
+"The route '%s' has a detailed type 'Ship From Deposit', so a partner must be "
+"set."
+msgstr ""
+"La route '%s' a un type détaillé 'Livraison depuis dépôt', donc un partenaire doit "
+"être défini."
+
+#. module: sale_from_hospital_stock
+#. odoo-python
+#: code:addons/sale_from_hospital_stock/models/res_partner.py:0
+#, python-format
+msgid "There is no warehouse in company %s."
+msgstr "Il n'y a pas d'entrepôt pour la société %s."
+
+#. module: sale_from_hospital_stock
+#: model:ir.model,name:sale_from_hospital_stock.model_stock_picking
+msgid "Transfer"
+msgstr "Transfert"
