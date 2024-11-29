@@ -46,9 +46,19 @@ class SaleOrder(models.Model):
             action['domain'] = [('id', 'in', self.refill_picking_ids.ids)]
         return action
 
+    def _get_refill_location(self):
+        self.ensure_one()
+        if self.route_id.detailed_type == "ship_from_deposit":
+            deposit_location = self.route_id.rule_ids[0].location_src_id
+            assert deposit_location.company_id.id == company_id
+            assert deposit_location.detailed_usage == 'deposit'
+            return deposit_location
+        else:
+            raise NotImplementedError
+
     def _generate_refill_picking(self):
         self.ensure_one()
-        assert self.route_id.detailed_type == 'ship_from_deposit'
+        assert self.route_id.detailed_type
         spo = self.env['stock.picking']
         existing_refill_pickings = spo.search([
             ('state', 'not in', ('done', 'cancel')),
@@ -62,9 +72,7 @@ class SaleOrder(models.Model):
                 order=self.name))
         company_id = self.company_id.id
         lot_stock_id = self.warehouse_id.lot_stock_id.id
-        deposit_location = self.route_id.rule_ids[0].location_src_id
-        assert deposit_location.company_id.id == company_id
-        assert deposit_location.detailed_usage == 'deposit'
+        deposit_location = self._get_refill_location()
         move_ids = []
         picking_origin = self.name
         if self.client_order_ref:

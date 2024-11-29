@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+<record id="view_partner_form" model="ir.ui.view">
+    <field name="model">res.partner</field>
+    <field name="inherit_id" ref="sale_from_hospital_stock.view_partner_form"/>
+    <field name="arch" type="xml">
+        <field name="deposit_location_id" position="after">
+                <button name="button_create_loan_route" type="object" string="Create Hospital Stock Loan" attrs="{'invisible': [('loan_route_id', '!=', False)]}" colspan="2" groups="stock.group_stock_manager"/>
+                <field name="loan_route_id"/>
+                <field name="loan_location_id"/>
+        </field>
+    </field>
+</record>
+
+
+</odoo>
