@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_product_index" model="ir.actions.act_window">
+        <field name="name">Indices de plan</field>
+        <field name="res_model">product.index</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem
+        id="menu_product_index_config"
+        action="action_product_index"
+        name="Indices de plan" parent="stock.menu_product_in_config_stock" sequence="20"/>
+
+</odoo>
