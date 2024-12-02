@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError
+from collections import defaultdict
 import logging
 logger = logging.getLogger(__name__)
 
@@ -42,12 +43,16 @@ class SaleOrder(models.Model):
         self.ensure_one()
         if self.route_id.detailed_type == "ship_from_loan":
             deposit_location = self.warehouse_id.lot_stock_id
-            return deposit_location
+            if not self.company_id.kit_creation_type_id:
+                raise UserError(
+                    "Le type d'opération de création ou réappro de KIT doit être configuré"
+                    " au niveau de la société")
+            return deposit_location, self.company_id.kit_creation_type_id
         return super()._get_refill_location()
 
     def _generate_loan_return(self):
         self.ensure_one()
-        assert self.route_id.ship_from_hospital_loan
+        assert self.route_id.detailed_type == "ship_from_loan"
         spo = self.env['stock.picking']
         existing_return_pickings = spo.search([
             ('state', 'not in', ('done', 'cancel')),

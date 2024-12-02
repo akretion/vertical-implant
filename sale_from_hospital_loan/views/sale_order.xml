@@ -11,6 +11,9 @@
     <field name="model">sale.order</field>
     <field name="inherit_id" ref="sale_from_hospital_stock.route_sale_order_form"/>
     <field name="arch" type="xml">
+        <field name="refill_deposit" position="attributes">
+            <attribute name="attrs">{'invisible': [('route_detailed_type', 'not in', ('ship_from_deposit', 'ship_from_loan'))]}</attribute>
+        </field>
         <field name="refill_deposit" position="after">
             <field name="return_picking_count" invisible="1"/>
         </field>

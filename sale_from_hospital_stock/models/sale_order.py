@@ -52,7 +52,8 @@ class SaleOrder(models.Model):
             deposit_location = self.route_id.rule_ids[0].location_src_id
             assert deposit_location.company_id.id == company_id
             assert deposit_location.detailed_usage == 'deposit'
-            return deposit_location
+            picking_type = self.warehouse_id.out_type_id
+            return deposit_location, picking_type
         else:
             raise NotImplementedError
 
@@ -72,7 +73,7 @@ class SaleOrder(models.Model):
                 order=self.name))
         company_id = self.company_id.id
         lot_stock_id = self.warehouse_id.lot_stock_id.id
-        deposit_location = self._get_refill_location()
+        deposit_location, picking_type = self._get_refill_location()
         move_ids = []
         picking_origin = self.name
         if self.client_order_ref:
@@ -98,7 +99,7 @@ class SaleOrder(models.Model):
             "move_type": "direct",
             'location_id': lot_stock_id,
             'location_dest_id': deposit_location.id,
-            'picking_type_id': self.warehouse_id.out_type_id.id,
+            'picking_type_id': picking_type.id,
             'move_ids': move_ids,
             })
         picking.action_confirm()
