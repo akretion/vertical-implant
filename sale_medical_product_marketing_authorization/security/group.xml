@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 Akretion France (http://www.akretion.com/)
+  @author: Alexis de Lattre <alexis.delattre@akretion.com>
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+
+
+<odoo>
+
+<record id="group_marketing_authorization" model="res.groups">
+    <field name="name">Configure Marketing Authorizations</field>
+    <field name="users" eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"/>
+    <field name="category_id" ref="base.module_category_usability" />
+</record>
+
+</odoo>

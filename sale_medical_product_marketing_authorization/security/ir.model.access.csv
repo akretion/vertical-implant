@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_marketing_authorization_read,Read access on product.marketing.authorization for employees,model_product_marketing_authorization,base.group_user,1,0,0,0
+access_product_marketing_authorization_period_read,Read access on product.marketing.authorization.period for employees,model_product_marketing_authorization_period,base.group_user,1,0,0,0
+access_product_marketing_authorization_full,Full access on product.marketing.authorization to dedicated grp,model_product_marketing_authorization,group_marketing_authorization,1,1,1,1
+access_product_marketing_authorization_period_full,Full access on product.marketing.authorization.period to dedicated grp,model_product_marketing_authorization_period,group_marketing_authorization,1,1,1,1

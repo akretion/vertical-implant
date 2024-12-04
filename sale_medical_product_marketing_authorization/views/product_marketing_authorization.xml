@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 Akretion France (https://www.akretion.com/)
+  @author: Alexis de Lattre <alexis.delattre@akretion.com>
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+
+<odoo>
+
+
+<record id="product_marketing_authorization_form" model="ir.ui.view">
+    <field name="model">product.marketing.authorization</field>
+    <field name="arch" type="xml">
+        <form>
+            <sheet>
+                <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <div class="oe_title">
+                    <label for="name" class="oe_edit_only"/>
+                    <h1>
+                         <field name="name"/>
+                    </h1>
+                </div>
+                <group name="main">
+                    <group name="main-left">
+                        <field name="partner_id" context="{'default_is_company': True}"/>
+                        <field name="product_ids" widget="many2many_tags"/>
+                        <field name="country_ids" widget="many2many_tags"/>
+                    </group>
+                    <group  name="main-right">
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="company_id" invisible="1"/>
+                        <field name="active" invisible="1"/>
+                        <field name="ref"/>
+                    </group>
+                </group>
+                <notebook>
+                    <page name="period_ids" string="Periods">
+                        <field name="period_ids" nolabel="1" colspan="2">
+                            <tree editable="bottom">
+                                <field name="start_date"/>
+                                <field name="end_date"/>
+                                <field name="signature_date" optional="show"/>
+                                <field name="create_uid" optional="hide"/>
+                                <field name="create_date" optional="hide"/>
+                                <field name="write_uid" optional="hide"/>
+                                <field name="write_date" optional="hide"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page name="notes" string="Notes">
+                        <field name="notes" nolabel="1" colspan="2"/>
+                    </page>
+                </notebook>
+            </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="activity_ids" widget="mail_activity"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </div>
+        </form>
+    </field>
+</record>
+
+<record id="product_marketing_authorization_tree" model="ir.ui.view">
+    <field name="model">product.marketing.authorization</field>
+    <field name="arch" type="xml">
+        <tree>
+            <field name="name" decoration-bf="1"/>
+            <field name="partner_id" optional="show"/>
+            <field name="ref" optional="hide"/>
+            <field name="end_date" optional="show"/>
+            <field name="company_id" groups="base.group_multi_company" optional="show"/>
+        </tree>
+    </field>
+</record>
+
+<record id="product_marketing_authorization_search" model="ir.ui.view">
+    <field name="model">product.marketing.authorization</field>
+    <field name="arch" type="xml">
+        <search>
+            <field name="name" filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]" string="Title or Reference"/>
+            <field name="product_ids"/>
+            <field name="country_ids"/>
+            <separator/>
+            <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+            <separator/>
+            <group name="groupby">
+                <filter name="end_date_groupby" string="End Date" context="{'group_by': 'end_date'}"/>
+                <filter name="partner_groupby" string="Distributor" context="{'group_by': 'partner_id'}"/>
+            </group>
+        </search>
+    </field>
+</record>
+
+<record id="product_marketing_authorization_action" model="ir.actions.act_window">
+    <field name="name">Marketing Authorizations</field>
+    <field name="res_model">product.marketing.authorization</field>
+    <field name="view_mode">tree,form</field>
+</record>
+
+<menuitem id="product_marketing_authorization_menu" action="product_marketing_authorization_action" parent="sale.prod_config_main" sequence="50"/>
+
+
+</odoo>
