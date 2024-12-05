@@ -13,7 +13,7 @@
     <field name="arch" type="xml">
         <xpath expr="//page[@name='sales_purchases']/group" position="inside">
             <group name="deposit" string="Deposit" attrs="{'invisible': [('parent_id', '!=', False)]}">
-                <button name="button_create_deposit_route" type="object" string="Create Deposit" attrs="{'invisible': [('deposit_route_id', '!=', False)]}" colspan="2" groups="stock.group_stock_manager"/>
+                <button name="button_create_deposit_route" type="object" string="Create Deposit" attrs="{'invisible': [('deposit_route_id', '!=', False)]}" colspan="2" groups="stock.group_stock_manager" confirm="Are you sure you want to create a deposit for this partner?"/>
                 <field name="deposit_route_id"/>
                 <field name="deposit_location_id"/>
             </group>
