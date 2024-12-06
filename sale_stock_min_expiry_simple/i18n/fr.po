@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-20 09:41+0000\n"
-"PO-Revision-Date: 2024-11-20 09:41+0000\n"
+"POT-Creation-Date: 2024-12-06 22:06+0000\n"
+"PO-Revision-Date: 2024-12-06 22:06+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,12 +18,13 @@ msgstr ""
 #. module: sale_stock_min_expiry_simple
 #: model:ir.model,name:sale_stock_min_expiry_simple.model_res_partner
 msgid "Contact"
-msgstr "Contact"
+msgstr ""
 
 #. module: sale_stock_min_expiry_simple
 #: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_res_partner__product_expiry_min_days
 #: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_res_users__product_expiry_min_days
 #: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_sale_order__product_expiry_min_days
+#: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_stock_move__product_expiry_min_days
 msgid "Minimum Expiry"
 msgstr "Péremption minimum"
 
@@ -31,8 +32,9 @@ msgstr "Péremption minimum"
 #: model:ir.model.fields,help:sale_stock_min_expiry_simple.field_res_partner__product_expiry_min_days
 #: model:ir.model.fields,help:sale_stock_min_expiry_simple.field_res_users__product_expiry_min_days
 #: model:ir.model.fields,help:sale_stock_min_expiry_simple.field_sale_order__product_expiry_min_days
+#: model:ir.model.fields,help:sale_stock_min_expiry_simple.field_stock_move__product_expiry_min_days
 msgid "Minimum expiry in days."
-msgstr "Péremption minimum en jours"
+msgstr "Péremption minimum en jours."
 
 #. module: sale_stock_min_expiry_simple
 #: model_terms:ir.ui.view,arch_db:sale_stock_min_expiry_simple.view_partner_property_form
@@ -42,7 +44,7 @@ msgstr "La péremption minimum est gérée sur"
 #. module: sale_stock_min_expiry_simple
 #: model:ir.model,name:sale_stock_min_expiry_simple.model_stock_quant
 msgid "Quants"
-msgstr "Quants"
+msgstr ""
 
 #. module: sale_stock_min_expiry_simple
 #: model:ir.model,name:sale_stock_min_expiry_simple.model_sale_order
@@ -50,9 +52,19 @@ msgid "Sales Order"
 msgstr "Bon de commande"
 
 #. module: sale_stock_min_expiry_simple
+#: model:ir.model,name:sale_stock_min_expiry_simple.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de commande"
+
+#. module: sale_stock_min_expiry_simple
 #: model:ir.model,name:sale_stock_min_expiry_simple.model_stock_move
 msgid "Stock Move"
 msgstr "Mouvement de stock"
+
+#. module: sale_stock_min_expiry_simple
+#: model:ir.model,name:sale_stock_min_expiry_simple.model_stock_rule
+msgid "Stock Rule"
+msgstr "Règle de stock"
 
 #. module: sale_stock_min_expiry_simple
 #: model:ir.model.constraint,message:sale_stock_min_expiry_simple.constraint_sale_order_product_expiry_min_days_positive
@@ -60,8 +72,15 @@ msgid "The minimum expiry must be positive or null."
 msgstr "La péremption minimum doit être positive ou nulle."
 
 #. module: sale_stock_min_expiry_simple
+#: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_stock_move__product_use_expiry_date
+msgid "Product Has an Expiry Date"
+msgstr "Le produit a une date de péremption"
+
+#. module: sale_stock_min_expiry_simple
+#: model_terms:ir.ui.view,arch_db:sale_stock_min_expiry_simple.view_move_form
 #: model_terms:ir.ui.view,arch_db:sale_stock_min_expiry_simple.view_order_form_inherit_sale_stock
 #: model_terms:ir.ui.view,arch_db:sale_stock_min_expiry_simple.view_partner_property_form
+#: model_terms:ir.ui.view,arch_db:sale_stock_min_expiry_simple.view_stock_move_operations
 msgid "days"
 msgstr "jours"
 

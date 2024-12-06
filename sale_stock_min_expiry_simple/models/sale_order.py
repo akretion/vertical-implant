@@ -27,3 +27,14 @@ class SaleOrder(models.Model):
             'CHECK(product_expiry_min_days >= 0)',
             'The minimum expiry must be positive or null.')
         ]
+
+
+class SaleOrderLine(models.Model):
+    _inherit = "sale.order.line"
+
+    def _prepare_procurement_values(self, group_id=False):
+        vals = super()._prepare_procurement_values(group_id=group_id)
+        if self.order_id and self.order_id.product_expiry_min_days:
+            if self.product_id.tracking in ('lot', 'serial') and self.product_id.use_expiry_date:
+                vals["product_expiry_min_days"] = self.order_id.product_expiry_min_days
+        return vals

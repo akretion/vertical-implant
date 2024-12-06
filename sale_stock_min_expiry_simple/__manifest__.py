@@ -15,6 +15,8 @@
     'depends': ['sale_stock', 'product_expiry_simple'],
     'data': [
         'views/sale_order.xml',
+        'views/stock_move.xml',
+        'views/stock_picking.xml',
         'views/res_partner.xml',
     ],
     'installable': True,
