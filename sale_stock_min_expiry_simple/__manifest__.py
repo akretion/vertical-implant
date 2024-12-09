@@ -18,6 +18,7 @@
         'views/stock_move.xml',
         'views/stock_picking.xml',
         'views/res_partner.xml',
+        'views/stock_picking_type.xml',
     ],
     'installable': True,
 }

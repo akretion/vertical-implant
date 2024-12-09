@@ -6,6 +6,8 @@ This module is useful for companies that sell products with expiry dates. These 
 
 With this module, you can configure a minimum expiry delay (in days) on the partner. This information is copied on the sale orders of that partner (and can be modified on the sale order). When the sale order is confirmed, Odoo will only reserve products whose expiry date is after the minimum number of days configured on the sale order.
 
+If the option **Block if under Minimum Expiry** is enabled on the operation type, Odoo will raise an error upon picking validation if the selected lot is under the minimum expiry (to block users that selected lots other than those reserved by Odoo and that selected a lot under the minimum expiry).
+
 Installation
 ============
 
