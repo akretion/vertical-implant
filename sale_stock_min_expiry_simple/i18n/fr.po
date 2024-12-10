@@ -6,19 +6,34 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 22:06+0000\n"
-"PO-Revision-Date: 2024-12-06 22:06+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2024-12-10 08:30+0000\n"
+"PO-Revision-Date: 2024-12-10 08:30+0000\n"
+"Last-Translator: Alexis de Lattre <alexis.delattre@akretion.com>\n"
 "Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
 #. module: sale_stock_min_expiry_simple
+#: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_stock_picking_type__min_expiry_raise
+msgid "Block if under Minimum Expiry"
+msgstr "Blocage si inférieur à la péremption minimum"
+
+#. module: sale_stock_min_expiry_simple
 #: model:ir.model,name:sale_stock_min_expiry_simple.model_res_partner
 msgid "Contact"
+msgstr "Contact"
+
+#. module: sale_stock_min_expiry_simple
+#: model:ir.model.fields,help:sale_stock_min_expiry_simple.field_stock_picking_type__min_expiry_raise
+msgid ""
+"If this option is enabled, Odoo will raise an error upon picking validation "
+"if the selected lot is under the minimum expiry."
 msgstr ""
+"Si cette option est activée, Odoo affichera une erreur bloquante lors de la validation du "
+"bon de transfert si le lot sélectionné est inférieur à la péremption minimum."
 
 #. module: sale_stock_min_expiry_simple
 #: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_res_partner__product_expiry_min_days
@@ -42,9 +57,51 @@ msgid "Minimum expiry is managed on"
 msgstr "La péremption minimum est gérée sur"
 
 #. module: sale_stock_min_expiry_simple
+#. odoo-python
+#: code:addons/sale_stock_min_expiry_simple/models/stock_move.py:0
+#, python-format
+msgid ""
+"Picking %(picking)s: missing expiry date on lot %(lot)s for product "
+"'%(product)s'."
+msgstr ""
+"Bon de transfert %(picking)s: date de péremption manquante sur le lot %(lot)s pour "
+"le produit '%(product)s'."
+
+#. module: sale_stock_min_expiry_simple
+#. odoo-python
+#: code:addons/sale_stock_min_expiry_simple/models/stock_move.py:0
+#, python-format
+msgid "Picking %(picking)s: missing lot for product '%(product)s'."
+msgstr "Bon de transfert %(picking)s: lot manquant pour le produit '%(product)s'."
+
+#. module: sale_stock_min_expiry_simple
+#. odoo-python
+#: code:addons/sale_stock_min_expiry_simple/models/stock_move.py:0
+#, python-format
+msgid ""
+"Picking %(picking)s: you cannot select lot %(lot)s for product '%(product)s' "
+"because the stock move is configured with a minimum expiry delay of "
+"%(min_expiry_days)s days, so the minimum expiry date is %(min_expiry_date)s."
+msgstr ""
+"Bon de transfert %(picking)s: vous ne pouvez pas sélectionner le lot %(lot)s pour "
+"le produit '%(product)s' parce que le mouvement de stock est configuré avec "
+"une péremption minimum de %(min_expiry_days)s jours, donc la "
+"date de péremption minimum est %(min_expiry_date)s."
+
+#. module: sale_stock_min_expiry_simple
+#: model:ir.model,name:sale_stock_min_expiry_simple.model_stock_picking_type
+msgid "Picking Type"
+msgstr "Type de transfert"
+
+#. module: sale_stock_min_expiry_simple
+#: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_stock_move__product_use_expiry_date
+msgid "Product Has an Expiry Date"
+msgstr "Le produit a une date de péremption"
+
+#. module: sale_stock_min_expiry_simple
 #: model:ir.model,name:sale_stock_min_expiry_simple.model_stock_quant
 msgid "Quants"
-msgstr ""
+msgstr "Quants"
 
 #. module: sale_stock_min_expiry_simple
 #: model:ir.model,name:sale_stock_min_expiry_simple.model_sale_order
@@ -70,11 +127,6 @@ msgstr "Règle de stock"
 #: model:ir.model.constraint,message:sale_stock_min_expiry_simple.constraint_sale_order_product_expiry_min_days_positive
 msgid "The minimum expiry must be positive or null."
 msgstr "La péremption minimum doit être positive ou nulle."
-
-#. module: sale_stock_min_expiry_simple
-#: model:ir.model.fields,field_description:sale_stock_min_expiry_simple.field_stock_move__product_use_expiry_date
-msgid "Product Has an Expiry Date"
-msgstr "Le produit a une date de péremption"
 
 #. module: sale_stock_min_expiry_simple
 #: model_terms:ir.ui.view,arch_db:sale_stock_min_expiry_simple.view_move_form

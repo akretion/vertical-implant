@@ -29,9 +29,16 @@ class StockMove(models.Model):
         return distinct_fields
 
     def _update_reserved_quantity(self, need, available_quantity, location_id, lot_id=None, package_id=None, owner_id=None, strict=True):
-        # inject stock move ID in context
         self = self.ensure_one()
+        # inject stock move ID in context
         return super(StockMove, self.with_context(min_expiry_simple_stock_move_id=self.id))._update_reserved_quantity(need, available_quantity, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
+
+    def _get_available_quantity(
+            self, location_id, lot_id=None, package_id=None, owner_id=None,
+            strict=False, allow_negative=False):
+        self = self.ensure_one()
+        # inject stock move ID in context
+        return super(StockMove, self.with_context(min_expiry_simple_stock_move_id=self.id))._get_available_quantity(location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict, allow_negative=allow_negative)
 
     def _action_done(self, cancel_backorder=False):
         res = super()._action_done(cancel_backorder=cancel_backorder)
