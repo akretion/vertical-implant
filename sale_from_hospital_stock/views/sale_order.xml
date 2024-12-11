@@ -22,6 +22,10 @@
                     class="oe_stat_button"
                     icon="fa-refresh"
                     attrs="{'invisible': [('refill_picking_count', '=', 0)]}">
+                <!-- For some strange reasons that I'm unable to explain
+                     Odoo doesn't display the string="Refill" below but it
+                     uses the string="" of the field in the python code
+                -->
                 <field name="refill_picking_count" widget="statinfo" string="Refill"/>
             </button>
         </div>

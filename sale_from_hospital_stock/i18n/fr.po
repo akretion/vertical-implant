@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-05 17:10+0000\n"
-"PO-Revision-Date: 2024-12-05 17:10+0000\n"
+"POT-Creation-Date: 2024-12-11 19:02+0000\n"
+"PO-Revision-Date: 2024-12-11 19:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -139,11 +139,6 @@ msgid "Location Type"
 msgstr "Type d'emplacement"
 
 #. module: sale_from_hospital_stock
-#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_sale_order__refill_picking_count
-msgid "Number of Refill Deposit Pickings"
-msgstr "Nombre de ré-approvisionnements du dépôt"
-
-#. module: sale_from_hospital_stock
 #: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_location__partner_id
 #: model:ir.model.fields,field_description:sale_from_hospital_stock.field_stock_route__partner_id
 msgid "Partner"
@@ -165,9 +160,10 @@ msgid "Picking Type for Sale Orders from Deposit"
 msgstr "Type de transfert pour les commandes client à partir d'un dépôt"
 
 #. module: sale_from_hospital_stock
+#: model:ir.model.fields,field_description:sale_from_hospital_stock.field_sale_order__refill_picking_count
 #: model_terms:ir.ui.view,arch_db:sale_from_hospital_stock.route_sale_order_form
 msgid "Refill"
-msgstr "Réapprovisionnement"
+msgstr "Ré-appro"
 
 #. module: sale_from_hospital_stock
 #: model:ir.model.fields,field_description:sale_from_hospital_stock.field_sale_order__refill_deposit

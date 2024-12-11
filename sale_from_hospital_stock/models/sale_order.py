@@ -21,7 +21,14 @@ class SaleOrder(models.Model):
     refill_picking_ids = fields.One2many(
         'stock.picking', 'refill_sale_id', string='Refill Deposit Pickings')
     refill_picking_count = fields.Integer(
-        compute='_compute_refill_picking_count', string='Number of Refill Deposit Pickings')
+        compute='_compute_refill_picking_count',
+        # for some strange reasons that I'm unable to explain
+        # Odoo doesn't display the string='' which is set in the view
+        # it uses the string defined below. So I set a short string
+        # for the button in the form view
+        # string='Number of Refill Deposit Pickings',
+        string="Refill"
+        )
 
     @api.depends('refill_picking_ids')
     def _compute_refill_picking_count(self):
@@ -66,9 +73,10 @@ class SaleOrder(models.Model):
         assert deposit_location.company_id.id == company_id
         assert deposit_location.detailed_usage == 'deposit'
         move_ids = []
-        picking_origin = self.name
         if self.client_order_ref:
-            picking_origin = f"{self.name} / {self.client_order_ref}"
+            picking_origin = self.client_order_ref
+        else:
+            picking_origin = self.name
         for l in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'product'):
             move_ids.append(Command.create({
                 'company_id': company_id,
