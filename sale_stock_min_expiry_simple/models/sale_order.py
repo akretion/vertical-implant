@@ -11,7 +11,7 @@ class SaleOrder(models.Model):
     product_expiry_min_days = fields.Integer(
         compute='_compute_product_expiry_min_days',
         string='Minimum Expiry', help="Minimum expiry in days.",
-        store=True, readonly=False, precompute=True)
+        store=True, readonly=False, precompute=True, tracking=True)
 
     @api.depends('partner_id', 'company_id')
     def _compute_product_expiry_min_days(self):

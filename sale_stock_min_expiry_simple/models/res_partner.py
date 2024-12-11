@@ -9,4 +9,5 @@ class ResPartner(models.Model):
     _inherit = 'res.partner'
 
     product_expiry_min_days = fields.Integer(
-        string='Minimum Expiry', help="Minimum expiry in days.", company_dependent=True)
+        string='Minimum Expiry', help="Minimum expiry in days.",
+        company_dependent=True, tracking=True)
