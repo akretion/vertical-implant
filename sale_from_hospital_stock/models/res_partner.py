@@ -23,6 +23,22 @@ class ResPartner(models.Model):
             partner.deposit_route_id = deposit_route
             partner.deposit_location_id = deposit_location
 
+    def _prepare_hospital_stock_location_vals(self):
+        self.ensure_one()
+        company = self.env.company
+        wh = self.env['stock.warehouse'].search([('company_id', '=', company.id)], limit=1)
+        if not wh:
+            raise UserError(_("There is no warehouse in company %s.") % company.display_name)
+        vals = {
+            'name': _('Deposit %s') % self.display_name,
+            'location_id': wh.view_location_id.id,
+            'detailed_usage': 'deposit',
+            'usage': 'internal',
+            'company_id': company.id,
+            'partner_id': self.id,
+            }
+        return vals
+
     def button_create_deposit_route(self):
         self.ensure_one()
         assert not self.deposit_route_id
@@ -30,25 +46,12 @@ class ResPartner(models.Model):
         company = self.env.company
         if not company.deposit_stock_out_type_id:
             raise UserError(_("Picking Type for Orders from Deposit is not configured on company %s.") % company.name)
-        wh = self.env['stock.warehouse'].search([('company_id', '=', company.id)], limit=1)
-        if not wh:
-            raise UserError(_("There is no warehouse in company %s.") % company.display_name)
         # create location
-        partner_name = self.name
-        if self.ref:
-            partner_name += f' {self.ref}'
         domain = [('company_id', '=', company.id), ('partner_id', '=', self.id)]
         existing_loc = self.env['stock.location'].search(domain + [('detailed_usage', '=', 'deposit')], limit=1)
         if existing_loc:
             raise UserError(_("A deposit already exists for partner %(partner)s: %(location)s.", partner=self.display_name, location=existing_loc.display_name))
-        loc_vals = {
-            'name': _('Deposit %s') % partner_name,
-            'location_id': wh.view_location_id.id,
-            'detailed_usage': 'deposit',
-            'usage': 'internal',
-            'company_id': company.id,
-            'partner_id': self.id,
-            }
+        loc_vals = self._prepare_hospital_stock_location_vals()
         deposit_location = self.env['stock.location'].create(loc_vals)
         self.message_post(
             body=_("Deposit <a href=# data-oe-model=stock.location data-oe-id=%(location_id)s>%(location_name)s</a> created.", location_id=deposit_location.id, location_name=deposit_location.display_name))
