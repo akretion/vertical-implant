@@ -2,6 +2,8 @@
 
 from odoo import api, fields, models, Command, _
 from odoo.exceptions import UserError
+import logging
+logger = logging.getLogger(__name__)
 
 
 class ResPartner(models.Model):
@@ -53,6 +55,7 @@ class ResPartner(models.Model):
             raise UserError(_("A deposit already exists for partner %(partner)s: %(location)s.", partner=self.display_name, location=existing_loc.display_name))
         loc_vals = self._prepare_hospital_stock_location_vals()
         deposit_location = self.env['stock.location'].create(loc_vals)
+        logger.info('Deposit location created %s ID %d', deposit_location.display_name, deposit_location.id)
         self.message_post(
             body=_("Deposit <a href=# data-oe-model=stock.location data-oe-id=%(location_id)s>%(location_name)s</a> created.", location_id=deposit_location.id, location_name=deposit_location.display_name))
         # create route
@@ -83,5 +86,6 @@ class ResPartner(models.Model):
             'detailed_type': 'ship_from_deposit',
             }
         deposit_route = self.env['stock.route'].create(deposit_route_vals)
+        logger.info('Deposit route created %s ID %d', deposit_route.display_name, deposit_route.id)
         self.message_post(
             body=_("Route <a href=# data-oe-model=stock.route data-oe-id=%(route_id)s>%(route_name)s</a> created.", route_id=deposit_route.id, route_name=deposit_route.display_name))
