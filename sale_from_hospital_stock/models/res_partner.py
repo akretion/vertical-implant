@@ -41,6 +41,33 @@ class ResPartner(models.Model):
             }
         return vals
 
+    def _prepare_hospital_stock_route_vals(self, deposit_location):
+        company = self.env.company
+        pull_rule_deposit = {
+            'name': _('From %s to Customers') % self.display_name,
+            'company_id': company.id,
+            'warehouse_id': False,
+            'action': 'pull',
+            'location_src_id': deposit_location.id,
+            'location_dest_id': self.property_stock_customer.id,
+            'procure_method': 'make_to_stock',
+            'picking_type_id': company.deposit_stock_out_type_id.id,
+            'partner_address_id': self.id,
+            }
+        deposit_route_vals = {
+            'name': _('Ship from %s') % deposit_location.display_name,
+            'company_id': company.id,
+            'sequence': 40,
+            'rule_ids': [Command.create(pull_rule_deposit)],
+            'product_selectable': False,
+            'product_categ_selectable': False,
+            'warehouse_selectable': False,
+            'sale_selectable': True,
+            'partner_id': self.id,
+            'detailed_type': 'ship_from_deposit',
+            }
+        return deposit_route_vals
+
     def button_create_deposit_route(self):
         self.ensure_one()
         assert not self.deposit_route_id
@@ -62,29 +89,7 @@ class ResPartner(models.Model):
         existing_route = self.env['stock.route'].search(domain + [('detailed_type', '=', 'ship_from_deposit')], limit=1)
         if existing_route:
             raise UserError(_("A route to ship from deposit already exists for partner %(partner)s: %(route)s.", partner=self.display_name, route=existing_route.display_name))
-        pull_rule_deposit = {
-            'name': _('From %s to Customers') % self.display_name,
-            'company_id': company.id,
-            'warehouse_id': False,
-            'action': 'pull',
-            'location_src_id': deposit_location.id,
-            'location_dest_id': self.property_stock_customer.id,
-            'procure_method': 'make_to_stock',
-            'picking_type_id': company.deposit_stock_out_type_id.id,
-            'partner_address_id': self.id,
-            }
-        deposit_route_vals = {
-            'name': _('Ship from %s') % loc_vals['name'],
-            'company_id': company.id,
-            'sequence': 40,
-            'rule_ids': [Command.create(pull_rule_deposit)],
-            'product_selectable': False,
-            'product_categ_selectable': False,
-            'warehouse_selectable': False,
-            'sale_selectable': True,
-            'partner_id': self.id,
-            'detailed_type': 'ship_from_deposit',
-            }
+        deposit_route_vals = self._prepare_hospital_stock_route_vals(deposit_location)
         deposit_route = self.env['stock.route'].create(deposit_route_vals)
         logger.info('Deposit route created %s ID %d', deposit_route.display_name, deposit_route.id)
         self.message_post(
