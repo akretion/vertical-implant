@@ -207,8 +207,8 @@ msgid ""
 "Route <a href=# data-oe-model=stock.route data-oe-"
 "id=%(route_id)s>%(route_name)s</a> created."
 msgstr ""
-"Route &lt;a href=# data-oe-model=stock.route data-oe-"
-"id=%(route_id)s&gt;%(route_name)s</a> créée."
+"Route <a href=# data-oe-model=stock.route data-oe-"
+"id=%(route_id)s>%(route_name)s</a> créée."
 
 #. module: sale_from_hospital_stock
 #: model:ir.model.fields,field_description:sale_from_hospital_stock.field_res_partner__deposit_route_id
