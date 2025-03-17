@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2025 Akretion France (https://www.akretion.com/)
+  @author: Alexis de Lattre <alexis.delattre@akretion.com>
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+
+<odoo>
+
+<record id="quant_search_view" model="ir.ui.view">
+    <field name="model">stock.quant</field>
+    <field name="inherit_id" ref="stock.quant_search_view"/>
+    <field name="arch" type="xml">
+        <filter name="internal_loc" position="before">
+            <filter name="deposit_loc" string="Deposits" domain="[('location_id.detailed_usage', '=', 'deposit')]"/>
+            <separator/>
+        </filter>
+    </field>
+</record>
+
+</odoo>

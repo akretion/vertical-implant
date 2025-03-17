@@ -17,6 +17,7 @@
         'views/sale_order.xml',
         'views/res_partner.xml',
         'views/stock_route.xml',
+        'views/stock_quant.xml',
         'views/stock_location.xml',
         'views/stock_picking.xml',
         'wizards/res_config_settings_view.xml',
