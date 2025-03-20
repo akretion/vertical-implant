@@ -21,5 +21,5 @@
         'views/product_marketing_authorization.xml',
         'views/sale_order.xml',
     ],
-    'installable': True,
+    'installable': False,
 }

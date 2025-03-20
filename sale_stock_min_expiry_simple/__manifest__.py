@@ -20,5 +20,5 @@
         'views/res_partner.xml',
         'views/stock_picking_type.xml',
     ],
-    'installable': True,
+    'installable': False,
 }

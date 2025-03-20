@@ -22,5 +22,5 @@
         'views/stock_picking.xml',
         'wizards/res_config_settings_view.xml',
     ],
-    'installable': True,
+    'installable': False,
 }
