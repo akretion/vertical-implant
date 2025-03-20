@@ -1,6 +1,6 @@
 # @author: Alexis de Lattre <alexis.delattre@akretion.com>
 
-from odoo import api, fields, models, Command, _
+from odoo import api, fields, models, Command
 from odoo.exceptions import UserError
 import logging
 logger = logging.getLogger(__name__)
@@ -30,9 +30,9 @@ class ResPartner(models.Model):
         company = self.env.company
         wh = self.env['stock.warehouse'].search([('company_id', '=', company.id)], limit=1)
         if not wh:
-            raise UserError(_("There is no warehouse in company %s.") % company.display_name)
+            raise UserError(self.env._("There is no warehouse in company %s.") % company.display_name)
         vals = {
-            'name': _('Deposit %s') % self.display_name,
+            'name': self.env._('Deposit %s') % self.display_name,
             'location_id': wh.view_location_id.id,
             'detailed_usage': 'deposit',
             'usage': 'internal',
@@ -44,7 +44,7 @@ class ResPartner(models.Model):
     def _prepare_hospital_stock_route_vals(self, deposit_location):
         company = self.env.company
         pull_rule_deposit = {
-            'name': _('From %s to Customers') % self.display_name,
+            'name': self.env._('From %s to Customers') % self.display_name,
             'company_id': company.id,
             'warehouse_id': False,
             'action': 'pull',
@@ -55,7 +55,7 @@ class ResPartner(models.Model):
             'partner_address_id': self.id,
             }
         deposit_route_vals = {
-            'name': _('Ship from %s') % deposit_location.display_name,
+            'name': self.env._('Ship from %s') % deposit_location.display_name,
             'company_id': company.id,
             'sequence': 40,
             'rule_ids': [Command.create(pull_rule_deposit)],
@@ -74,23 +74,23 @@ class ResPartner(models.Model):
         assert not self.parent_id
         company = self.env.company
         if not company.deposit_stock_out_type_id:
-            raise UserError(_("Picking Type for Orders from Deposit is not configured on company %s.") % company.name)
+            raise UserError(self.env._("Picking Type for Orders from Deposit is not configured on company %s.") % company.name)
         # create location
         domain = [('company_id', '=', company.id), ('partner_id', '=', self.id)]
         existing_loc = self.env['stock.location'].search(domain + [('detailed_usage', '=', 'deposit')], limit=1)
         if existing_loc:
-            raise UserError(_("A deposit already exists for partner %(partner)s: %(location)s.", partner=self.display_name, location=existing_loc.display_name))
+            raise UserError(self.env._("A deposit already exists for partner %(partner)s: %(location)s.", partner=self.display_name, location=existing_loc.display_name))
         loc_vals = self._prepare_hospital_stock_location_vals()
         deposit_location = self.env['stock.location'].create(loc_vals)
         logger.info('Deposit location created %s ID %d', deposit_location.display_name, deposit_location.id)
         self.message_post(
-            body=_("Deposit <a href=# data-oe-model=stock.location data-oe-id=%(location_id)s>%(location_name)s</a> created.", location_id=deposit_location.id, location_name=deposit_location.display_name))
+            body=self.env._("Deposit <a href=# data-oe-model=stock.location data-oe-id=%(location_id)s>%(location_name)s</a> created.", location_id=deposit_location.id, location_name=deposit_location.display_name))
         # create route
         existing_route = self.env['stock.route'].search(domain + [('detailed_type', '=', 'ship_from_deposit')], limit=1)
         if existing_route:
-            raise UserError(_("A route to ship from deposit already exists for partner %(partner)s: %(route)s.", partner=self.display_name, route=existing_route.display_name))
+            raise UserError(self.env._("A route to ship from deposit already exists for partner %(partner)s: %(route)s.", partner=self.display_name, route=existing_route.display_name))
         deposit_route_vals = self._prepare_hospital_stock_route_vals(deposit_location)
         deposit_route = self.env['stock.route'].create(deposit_route_vals)
         logger.info('Deposit route created %s ID %d', deposit_route.display_name, deposit_route.id)
         self.message_post(
-            body=_("Route <a href=# data-oe-model=stock.route data-oe-id=%(route_id)s>%(route_name)s</a> created.", route_id=deposit_route.id, route_name=deposit_route.display_name))
+            body=self.env._("Route <a href=# data-oe-model=stock.route data-oe-id=%(route_id)s>%(route_name)s</a> created.", route_id=deposit_route.id, route_name=deposit_route.display_name))

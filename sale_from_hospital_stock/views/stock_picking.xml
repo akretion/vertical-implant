@@ -12,7 +12,7 @@
     <field name="inherit_id" ref="stock.view_picking_form"/>
     <field name="arch" type="xml">
         <field name="origin" position="before">
-            <field name="refill_sale_id" attrs="{'invisible': [('refill_sale_id', '=', False)]}"/>
+            <field name="refill_sale_id" invisible="not refill_sale_id"/>
         </field>
     </field>
 </record>

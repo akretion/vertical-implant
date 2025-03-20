@@ -1,7 +1,7 @@
 # @author: Alexis de Lattre <alexis.delattre@akretion.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models, Command, _
+from odoo import api, fields, models, Command
 from odoo.exceptions import UserError
 import logging
 logger = logging.getLogger(__name__)
@@ -15,9 +15,7 @@ class SaleOrder(models.Model):
         domain="[('partner_id', 'in', (commercial_partner_id, False)), ('company_id', 'in', (company_id, False)), ('sale_selectable', '=', True)]")
     route_detailed_type = fields.Selection(related='route_id.detailed_type', store=True)
     refill_deposit = fields.Boolean(
-        default=True, string='Refill Deposit', tracking=True,
-        readonly=True,
-        states={'draft': [('readonly', False)], 'sent': [('readonly', False)]})
+        default=True, string='Refill Deposit', tracking=True)
     refill_picking_ids = fields.One2many(
         'stock.picking', 'refill_sale_id', string='Refill Deposit Pickings')
     refill_picking_count = fields.Integer(
@@ -62,7 +60,7 @@ class SaleOrder(models.Model):
             ('refill_sale_id', '=', self.id),
             ])
         if existing_refill_pickings:
-            raise UserError(_(
+            raise UserError(self.env._(
                 "Refill deposit pickings (%(pickings)s) linked to order %(order)s already exists. "
                 "You must cancel them and try again.",
                 pickings=', '.join([p.name for p in existing_refill_pickings]),
@@ -87,7 +85,7 @@ class SaleOrder(models.Model):
                 'location_id': lot_stock_id,
                 'location_dest_id': deposit_location.id,
                 'warehouse_id': self.warehouse_id.id,
-                'origin': _('Refill Deposit %s') % self.name,
+                'origin': self.env._('Refill Deposit %s') % self.name,
                 }))
         picking = spo.create({
             'company_id': company_id,

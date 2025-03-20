@@ -14,7 +14,7 @@
             <field name="detailed_usage"/>
         </field>
         <field name="usage" position="after">
-            <field name="partner_id" attrs="{'invisible': [('detailed_usage', '!=', 'deposit')]}"/>
+            <field name="partner_id" invisible="detailed_usage != 'deposit'"/>
         </field>
     </field>
 </record>
@@ -24,7 +24,7 @@
     <field name="inherit_id" ref="stock.view_location_tree2"/>
     <field name="arch" type="xml">
         <field name="usage" position="after">
-            <field name="detailed_usage" attrs="{'invisible': [('detailed_usage', '!=', 'deposit')]}" optional="hide"/>
+            <field name="detailed_usage" invisible="detailed_usage != 'deposit'" optional="hide"/>
         </field>
     </field>
 </record>

@@ -2,7 +2,7 @@
 # @author: Alexis de Lattre <alexis.delattre@akretion.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
@@ -19,6 +19,6 @@ class StockRoute(models.Model):
     def _check_detailed_type(self):
         for route in self:
             if route.detailed_type == 'ship_from_deposit' and not route.partner_id:
-                raise ValidationError(_(
+                raise ValidationError(self.env._(
                     "The route '%s' has a detailed type 'Ship From Deposit', "
                     "so a partner must be set.") % route.display_name)
