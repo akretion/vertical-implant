@@ -1,13 +1,11 @@
 [project]
 name = "odoo-addons-akretion-vertical-implant"
-version = "16.0.20250320.0"
+version = "18.0.20250610.0"
 dependencies = [
-    "odoo-addon-sale_from_hospital_stock>=16.0dev,<16.1dev",
-    "odoo-addon-sale_medical_product_marketing_authorization>=16.0dev,<16.1dev",
-    "odoo-addon-sale_stock_min_expiry_simple>=16.0dev,<16.1dev",
+    "odoo-addon-sale_from_hospital_stock==18.0.*",
 ]
 classifiers=[
     "Programming Language :: Python",
     "Framework :: Odoo",
-    "Framework :: Odoo :: 16.0",
+    "Framework :: Odoo :: 18.0",
 ]
