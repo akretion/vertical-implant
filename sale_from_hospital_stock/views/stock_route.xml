@@ -12,7 +12,7 @@
     <field name="arch" type="xml">
         <field name="active" position="before">
             <field name="detailed_type"/>
-            <field name="partner_id" attrs="{'invisible': [('detailed_type', '!=', 'ship_from_deposit')]}"/>
+            <field name="partner_id" invisible="detailed_type != 'ship_from_deposit'"/>
         </field>
     </field>
 </record>
@@ -23,7 +23,7 @@
     <field name="arch" type="xml">
         <field name="company_id" position="before">
             <field name="detailed_type" optional="show"/>
-            <field name="partner_id" optional="show" attrs="{'invisible': [('detailed_type', '!=', 'ship_from_deposit')]}"/>
+            <field name="partner_id" optional="show" invisible="detailed_type != 'ship_from_deposit'"/>
         </field>
     </field>
 </record>
