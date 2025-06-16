@@ -12,6 +12,7 @@ class SaleOrder(models.Model):
 
     # inherit the field of sale_order_route
     route_id = fields.Many2one(
+        compute="_compute_route_id", store=True, readonly=False,
         domain="[('partner_id', 'in', (commercial_partner_id, False)), ('company_id', 'in', (company_id, False)), ('sale_selectable', '=', True)]")
     route_detailed_type = fields.Selection(related='route_id.detailed_type', store=True)
     refill_deposit = fields.Boolean(
@@ -27,6 +28,12 @@ class SaleOrder(models.Model):
         # string='Number of Refill Deposit Pickings',
         string="Refill"
         )
+
+    @api.depends("partner_id")
+    def _compute_route_id(self):
+        for sale in self:
+            if sale.partner_id.deposit_route_id:
+                sale.route_id = sale.partner_id.deposit_route_id.id
 
     @api.depends('refill_picking_ids')
     def _compute_refill_picking_count(self):
