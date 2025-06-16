@@ -45,7 +45,7 @@ class SaleOrder(models.Model):
                 'res_id': self.refill_picking_ids.id,
                 'view_id': False,
                 'views': False,
-                'view_mode': 'form,tree,kanban,calendar,pivot,graph,activity',
+                'view_mode': 'form,list,kanban,calendar,pivot,graph,activity',
                 })
         else:
             action['domain'] = [('id', 'in', self.refill_picking_ids.ids)]
@@ -75,7 +75,7 @@ class SaleOrder(models.Model):
             picking_origin = self.client_order_ref
         else:
             picking_origin = self.name
-        for l in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'product'):
+        for l in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'consu'):
             move_ids.append(Command.create({
                 'company_id': company_id,
                 'product_id': l.product_id.id,
