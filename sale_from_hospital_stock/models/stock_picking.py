@@ -16,3 +16,14 @@ class StockPicking(models.Model):
     def _compute_source_sale_id(self):
         for picking in self:
             picking.source_sale_id = picking.refill_sale_id or picking.sale_id
+
+    @api.depends('picking_type_id', 'partner_id')
+    def _compute_location_id(self):
+        res = super()._compute_location_id()
+        for picking in self:
+            if picking.state in ('cancel', 'done') or picking.return_id:
+                continue
+            picking = picking.with_company(picking.company_id)
+            if picking.picking_type_id.code == "outgoing" and picking.partner_id.deposit_location_id:
+                picking.location_dest_id = picking.partner_id.deposit_location_id.id
+        return res
