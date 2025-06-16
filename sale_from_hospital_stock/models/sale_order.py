@@ -45,7 +45,7 @@ class SaleOrder(models.Model):
                 'res_id': self.refill_picking_ids.id,
                 'view_id': False,
                 'views': False,
-                'view_mode': 'form,tree,kanban,calendar,pivot,graph,activity',
+                'view_mode': 'form,list,kanban,calendar,pivot,graph,activity',
                 })
         else:
             action['domain'] = [('id', 'in', self.refill_picking_ids.ids)]
