@@ -67,7 +67,7 @@ class SaleOrder(models.Model):
                 order=self.name))
         company_id = self.company_id.id
         lot_stock_id = self.warehouse_id.lot_stock_id.id
-        deposit_location = self.route_id.rule_ids[0].location_src_id
+        deposit_location = self.route_id.rule_ids.filtered(lambda rule: rule.location_dest_id.usage == "customer").location_src_id
         assert deposit_location.company_id.id == company_id
         assert deposit_location.detailed_usage == 'deposit'
         move_ids = []
@@ -75,6 +75,9 @@ class SaleOrder(models.Model):
             picking_origin = self.client_order_ref
         else:
             picking_origin = self.name
+        # If we find rules to go to the partner deposit, use it, else, we'll have
+        # a default/simple delivery order
+        deposit_rule = self.route_id.rule_ids.filtered(lambda rule: rule.location_dest_id == self.partner_id.deposit_location_id)
         for l in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'consu'):
             move_ids.append(Command.create({
                 'company_id': company_id,
@@ -82,10 +85,13 @@ class SaleOrder(models.Model):
                 'product_uom_qty': l.product_uom_qty,
                 'product_uom': l.product_uom.id,
                 'name': l.product_id.display_name,
-                'location_id': lot_stock_id,
+                'location_id': deposit_rule.location_src_id.id or lot_stock_id,
                 'location_dest_id': deposit_location.id,
                 'warehouse_id': self.warehouse_id.id,
                 'origin': self.env._('Refill Deposit %s') % self.name,
+                "group_id": self.procurement_group_id.id,
+                "procure_method": deposit_rule.procure_method or "make_to_stock",
+                "route_ids": [Command.set(self.route_id.ids)],
                 }))
         picking = spo.create({
             'company_id': company_id,
@@ -94,10 +100,11 @@ class SaleOrder(models.Model):
             "refill_sale_id": self.id,
             'origin': picking_origin,
             "move_type": "direct",
-            'location_id': lot_stock_id,
+            'location_id': deposit_rule.location_src_id.id or lot_stock_id,
             'location_dest_id': deposit_location.id,
-            'picking_type_id': self.warehouse_id.out_type_id.id,
+            'picking_type_id': deposit_rule.picking_type_id.id or self.warehouse_id.out_type_id.id,
             'move_ids': move_ids,
+            "group_id": self.procurement_group_id.id,
             })
         picking.action_confirm()
 
