@@ -4,7 +4,7 @@
 
 {
     'name': 'Sale Medical Product Marketing Authorisation',
-    'version': '16.0.1.0.0',
+    'version': "18.0.1.0.0",
     'category': 'Warehouse',
     'license': 'AGPL-3',
     'summary': 'Block sale of medical devices without valid marketing authorisation',
@@ -21,5 +21,5 @@
         'views/product_marketing_authorization.xml',
         'views/sale_order.xml',
     ],
-    'installable': False,
+    'installable': True,
 }
