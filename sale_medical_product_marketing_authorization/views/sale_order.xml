@@ -16,7 +16,7 @@
             <div
                     class="alert alert-warning"
                     role="alert"
-                    attrs="{'invisible': [('missing_marketing_authorization_products', '=', False)]}"
+                    invisible="not missing_marketing_authorization_products"
                 >
                 These products have no valid marketing authorization:
                 <field name="missing_marketing_authorization_products" />
