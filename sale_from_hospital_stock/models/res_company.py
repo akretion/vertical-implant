@@ -11,3 +11,4 @@ class ResCompany(models.Model):
     deposit_stock_out_type_id = fields.Many2one(
         'stock.picking.type', string='Picking Type for Sale Orders from Deposit',
         ondelete='restrict', check_company=True)
+    deposit_main_location_id = fields.Many2one("stock.location")
