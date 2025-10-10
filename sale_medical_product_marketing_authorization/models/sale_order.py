@@ -63,17 +63,19 @@ class SaleOrder(models.Model):
                     ])
                 ])
             ])
-        rules_partner_country = self.env['product.marketing.authorization'].search_read(
-            domain, ['product_ids'])
-        rules_partner_country_ids = [x['id'] for x in rules_partner_country]
+        partner_country_auths = self.env['product.marketing.authorization'].search_read(
+            domain, ['product_ids', 'duration_type'])
+        period_partner_country_auth_ids = [x['id'] for x in partner_country_auths if x['duration_type'] == 'period']
         periods = self.env['product.marketing.authorization.period'].search_read([
             ('start_date', '<=', date),
             ('end_date', '>=', date),
-            ('parent_id', 'in', rules_partner_country_ids),
+            ('parent_id', 'in', period_partner_country_auth_ids),
             ], ['parent_id'])
-        rules_partner_country_date_ids = [period['parent_id'][0] for period in periods]
+        period_partner_country_auth_ids = [period['parent_id'][0] for period in periods]
         product_ids = set()
-        for auth in rules_partner_country:
-            if auth['id'] in rules_partner_country_date_ids:
+        for auth in partner_country_auths:
+            if auth['duration_type'] == 'illimited':
+                product_ids.update(auth['product_ids'])
+            elif auth['id'] in period_partner_country_auth_ids:
                 product_ids.update(auth['product_ids'])
         return list(product_ids)

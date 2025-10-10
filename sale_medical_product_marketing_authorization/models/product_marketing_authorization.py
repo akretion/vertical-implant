@@ -34,6 +34,10 @@ class ProductMarketingAuthorization(models.Model):
     period_ids = fields.One2many(
         'product.marketing.authorization.period', 'parent_id',
         string='Periods', tracking=True, copy=False)
+    duration_type = fields.Selection([
+        ('period', 'Periods'),
+        ('illimited', 'Illimited'),
+        ], default='period', required=True, tracking=True)
     end_date = fields.Date(compute='_compute_end_date', store=True)
     notes = fields.Html(copy=False)
 
@@ -43,11 +47,22 @@ class ProductMarketingAuthorization(models.Model):
             'unique(name)',
             'A marketing authorization already exists with the same title.')]
 
-    @api.depends('period_ids.end_date')
+    @api.constrains('duration_type', 'period_ids')
+    def _check_product_marketing_authorization(self):
+        for auth in self:
+            if auth.duration_type == 'illimited' and auth.period_ids:
+                raise ValidationError(_(
+                    "Product Marketing Authorization '%s' is configured "
+                    "as illimited, so it should not have any period defined.")
+                    % auth.display_name)
+
+    @api.depends('period_ids.end_date', 'duration_type')
     def _compute_end_date(self):
         for auth in self:
-            end_dates = [p.end_date for p in auth.period_ids]
-            auth.end_date = end_dates and max(end_dates) or False
+            end_date = False
+            if auth.duration_type == 'period' and auth.period_ids:
+                end_date = max([p.end_date for p in auth.period_ids])
+            auth.end_date = end_date
 
     def copy_data(self, default=None):
         self.ensure_one()
@@ -86,7 +101,6 @@ class ProductMarketingAuthorizationPeriod(models.Model):
         'product.marketing.authorization', ondelete='cascade')
     start_date = fields.Date(required=True)
     end_date = fields.Date(required=True)
-    signature_date = fields.Date()
 
     @api.constrains('start_date', 'end_date', 'parent_id')
     def _check_periods(self):

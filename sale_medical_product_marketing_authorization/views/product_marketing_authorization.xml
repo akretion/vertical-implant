@@ -25,6 +25,7 @@
                         <field name="partner_id" context="{'default_is_company': True}"/>
                         <field name="product_ids" widget="many2many_tags"/>
                         <field name="country_ids" widget="many2many_tags"/>
+                        <field name="duration_type"/>
                     </group>
                     <group  name="main-right">
                         <field name="company_id" groups="base.group_multi_company"/>
@@ -33,24 +34,21 @@
                         <field name="ref"/>
                     </group>
                 </group>
-                <notebook>
-                    <page name="period_ids" string="Periods">
+                <group name="period_ids" string="Periods" attrs="{'invisible': [('duration_type', '!=', 'period')]}">
                         <field name="period_ids" nolabel="1" colspan="2">
                             <tree editable="bottom">
                                 <field name="start_date"/>
                                 <field name="end_date"/>
-                                <field name="signature_date" optional="show"/>
                                 <field name="create_uid" optional="hide"/>
                                 <field name="create_date" optional="hide"/>
                                 <field name="write_uid" optional="hide"/>
                                 <field name="write_date" optional="hide"/>
                             </tree>
                         </field>
-                    </page>
-                    <page name="notes" string="Notes">
+                    </group>
+                    <group name="notes" string="Notes">
                         <field name="notes" nolabel="1" colspan="2"/>
-                    </page>
-                </notebook>
+                    </group>
             </sheet>
             <div class="oe_chatter">
                 <field name="message_follower_ids" widget="mail_followers"/>
@@ -64,11 +62,12 @@
 <record id="product_marketing_authorization_tree" model="ir.ui.view">
     <field name="model">product.marketing.authorization</field>
     <field name="arch" type="xml">
-        <tree>
+        <tree decoration-danger="duration_type == 'period' and end_date &lt; today">
             <field name="name" decoration-bf="1"/>
             <field name="partner_id" optional="show"/>
             <field name="ref" optional="hide"/>
-            <field name="end_date" optional="show"/>
+            <field name="duration_type" optional="show" decoration-success="duration_type == 'illimited'" decoration-info="duration_type == 'period'" widget="badge"/>
+            <field name="end_date" optional="show" attrs="{'invisible': [('duration_type', '=', 'illimited')]}"/>
             <field name="company_id" groups="base.group_multi_company" optional="show"/>
         </tree>
     </field>
@@ -81,6 +80,9 @@
             <field name="name" filter_domain="['|', ('name', 'ilike', self), ('ref', 'ilike', self)]" string="Title or Reference"/>
             <field name="product_ids"/>
             <field name="country_ids"/>
+            <separator/>
+            <filter name="duration_period" string="Limited Duration" domain="[('duration_type', '=', 'period')]"/>
+            <filter name="duration_illimited" string="Illimited" domain="[('duration_type', '=', 'illimited')]"/>
             <separator/>
             <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
             <separator/>
