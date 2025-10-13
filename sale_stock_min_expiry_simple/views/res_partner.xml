@@ -12,11 +12,11 @@
     <field name="inherit_id" ref="product.view_partner_property_form"/>
     <field name="arch" type="xml">
         <group name="sale" position="inside">
-            <label for="product_expiry_min_days" attrs="{'invisible': [('parent_id', '!=', False)]}"/>
-            <div name="product_expiry_min_days" attrs="{'invisible': [('parent_id', '!=', False)]}">
+            <label for="product_expiry_min_days" invisible="parent_id" />
+            <div name="product_expiry_min_days" invisible="parent_id" >
                 <field name="product_expiry_min_days" class="oe_inline"/> days
             </div>
-            <div name="parent_product_expiry_min_days" colspan="2" attrs="{'invisible': [('parent_id', '=', False)]}">
+            <div name="parent_product_expiry_min_days" colspan="2" invisible="not parent_id">
                 <p>Minimum expiry is managed on <button name="open_commercial_entity" type="object" string="the parent company" class="oe_link"/></p>
             </div>
         </group>
