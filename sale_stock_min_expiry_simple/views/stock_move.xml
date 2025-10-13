@@ -14,7 +14,7 @@
     <field name="arch" type="xml">
         <field name="product_id" position="after">
             <field name="product_use_expiry_date" invisible="1"/>
-            <field name="product_expiry_min_days" optional="hide" attrs="{'invisible': [('product_use_expiry_date', '=', False)]}"/>
+            <field name="product_expiry_min_days" optional="hide" invisible="not product_use_expiry_date"/>
         </field>
     </field>
 </record>
@@ -27,7 +27,8 @@
             <field name="product_use_expiry_date" invisible="1"/>
             <field
                     name="product_expiry_min_days"
-                    attrs="{'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('move_lines_count', '&gt;', 0)], 'invisible': [('product_use_expiry_date', '=', False)]}"
+                readonly="(state != 'draft' and not additional) or move_lines_count &gt; 0"
+                invisible="not product_use_expiry_date"
                     optional="hide"
                 />
         </field>
@@ -40,9 +41,11 @@
     <field name="arch" type="xml">
         <field name="product_id" position="after">
             <field name="product_use_expiry_date" invisible="1"/>
-            <label for="product_expiry_min_days" attrs="{'invisible': [('product_use_expiry_date', '=', False)]}"/>
-
-            <div attrs="{'invisible': [('product_use_expiry_date', '=', False)]}" name="product_expiry_min_days">
+            <label for="product_expiry_min_days"
+                invisible="not product_use_expiry_date"
+                />
+            <div invisible="not product_use_expiry_date"
+                name="product_expiry_min_days">
                 <field name="product_expiry_min_days" readonly="1" class="oe_inline"/> days
             </div>
         </field>
@@ -55,8 +58,8 @@
     <field name="arch" type="xml">
         <group name="main_grp_col2" position="inside">
             <field name="product_use_expiry_date" invisible="1"/>
-            <label for="product_expiry_min_days" attrs="{'invisible': [('product_use_expiry_date', '=', False)]}"/>
-            <div attrs="{'invisible': [('product_use_expiry_date', '=', False)]}" name="product_expiry_min_days">
+            <label for="product_expiry_min_days" invisible="not product_use_expiry_date"/>
+            <div  invisible="not product_use_expiry_date" name="product_expiry_min_days">
                 <field name="product_expiry_min_days" class="oe_inline"/> days
             </div>
         </group>

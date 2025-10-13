@@ -28,10 +28,10 @@ class StockMove(models.Model):
         distinct_fields.append("product_expiry_min_days")
         return distinct_fields
 
-    def _update_reserved_quantity(self, need, available_quantity, location_id, lot_id=None, package_id=None, owner_id=None, strict=True):
+    def _update_reserved_quantity(self, need, location_id, lot_id=None, package_id=None, owner_id=None, strict=True):
         self = self.ensure_one()
         # inject stock move ID in context
-        return super(StockMove, self.with_context(min_expiry_simple_stock_move_id=self.id))._update_reserved_quantity(need, available_quantity, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
+        return super(StockMove, self.with_context(min_expiry_simple_stock_move_id=self.id))._update_reserved_quantity(need, location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
 
     def _get_available_quantity(
             self, location_id, lot_id=None, package_id=None, owner_id=None,
@@ -39,6 +39,12 @@ class StockMove(models.Model):
         self = self.ensure_one()
         # inject stock move ID in context
         return super(StockMove, self.with_context(min_expiry_simple_stock_move_id=self.id))._get_available_quantity(location_id, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict, allow_negative=allow_negative)
+
+    def _split(self, qty, restrict_partner_id=False):
+        vals_list = super()._split(qty, restrict_partner_id=restrict_partner_id)
+        if vals_list and self.product_expiry_min_days:
+            vals_list[0]["product_expiry_min_days"] = self.product_expiry_min_days
+        return vals_list
 
     def _action_done(self, cancel_backorder=False):
         res = super()._action_done(cancel_backorder=cancel_backorder)
