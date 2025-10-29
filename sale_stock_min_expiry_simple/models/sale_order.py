@@ -18,7 +18,7 @@ class SaleOrder(models.Model):
         for order in self:
             product_expiry_min_days = False
             if order.partner_id and order.company_id:
-                product_expiry_min_days = order.with_company(order.company_id.id).partner_id.commercial_partner_id.product_expiry_min_days
+                product_expiry_min_days = order.with_company(order.company_id.id).partner_id.commercial_partner_id.product_expiry_min_days or order.company_id.product_expiry_min_days
             order.product_expiry_min_days = product_expiry_min_days
 
     _sql_constraints = [

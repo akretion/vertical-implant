@@ -19,6 +19,7 @@
         'views/stock_picking.xml',
         'views/res_partner.xml',
         'views/stock_picking_type.xml',
+        'wizards/res_config_settings_view.xml',
     ],
     'installable': True,
 }
