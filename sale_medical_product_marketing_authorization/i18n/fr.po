@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-04 22:49+0000\n"
-"PO-Revision-Date: 2024-12-04 22:49+0000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2025-11-03 22:07+0000\n"
+"PO-Revision-Date: 2025-11-03 22:07+0000\n"
+"Last-Translator: Alexis de Lattre <alexis.delattre@akretion.com>\n"
 "Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -32,12 +33,6 @@ msgstr ""
 #, python-format
 msgid "%s (copy)"
 msgstr "%s (copie)"
-
-#. module: sale_medical_product_marketing_authorization
-#: model:ir.model.constraint,message:sale_medical_product_marketing_authorization.constraint_product_marketing_authorization_name_uniq
-msgid "A marketing authorization already exists with the same title."
-msgstr ""
-"Une autorisation de mise sur le marché existe déjà avec le même titre."
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__message_needaction
@@ -90,6 +85,11 @@ msgid "Attachment Count"
 msgstr "Nombre de pièces jointes"
 
 #. module: sale_medical_product_marketing_authorization
+#: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_enable_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__company_id
 msgid "Company"
 msgstr "Société"
@@ -101,23 +101,32 @@ msgstr "Configurer les autorisations de mise sur le marché"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__country_ids
+#: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_tree
 msgid "Countries"
 msgstr "Pays"
 
 #. module: sale_medical_product_marketing_authorization
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__country_ids_str
+msgid "Countries as Text"
+msgstr "Pays en tant que texte"
+
+#. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__create_uid
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_enable__create_uid
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__create_uid
 msgid "Created by"
 msgstr "Créé par"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__create_date
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_enable__create_date
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__create_date
 msgid "Created on"
 msgstr "Créé le"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__display_name
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_enable__display_name
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
@@ -127,6 +136,23 @@ msgstr "Nom affiché"
 #: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_search
 msgid "Distributor"
 msgstr "Distributeur"
+
+#. module: sale_medical_product_marketing_authorization
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__duration_type
+msgid "Duration Type"
+msgstr "Type de durée"
+
+#. module: sale_medical_product_marketing_authorization
+#: model:ir.actions.act_window,name:sale_medical_product_marketing_authorization.product_marketing_authorization_enable_product_product_action
+#: model:ir.actions.act_window,name:sale_medical_product_marketing_authorization.product_marketing_authorization_enable_product_template_action
+#: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_enable_form
+msgid "Enable Marketing Authorization"
+msgstr "Activer l'autorisation de mise sur le marché"
+
+#. module: sale_medical_product_marketing_authorization
+#: model:ir.model,name:sale_medical_product_marketing_authorization.model_product_marketing_authorization_enable
+msgid "Enable Marketing Authorization on Product"
+msgstr "Activer l'autorisation de mise sur le marché sur l'article"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__end_date
@@ -157,9 +183,10 @@ msgstr "A un message"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__id
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_enable__id
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__activity_exception_icon
@@ -194,8 +221,14 @@ msgstr ""
 msgid ""
 "If enabled, this product will require a marketing authorization to be sold."
 msgstr ""
-"Si cette option est activée, ce produit nécessitera une "
-"autorisation de mise sur le marché pour être vendu."
+"Si cette option est activée, ce produit nécessitera une autorisation de mise "
+"sur le marché pour être vendu."
+
+#. module: sale_medical_product_marketing_authorization
+#: model:ir.model.fields.selection,name:sale_medical_product_marketing_authorization.selection__product_marketing_authorization__duration_type__illimited
+#: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_search
+msgid "Illimited"
+msgstr "Illimité"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__message_is_follower
@@ -204,21 +237,29 @@ msgstr "Est abonné"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization____last_update
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_enable____last_update
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period____last_update
 msgid "Last Modified on"
 msgstr "Dernière modification le"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__write_uid
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_enable__write_uid
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__write_uid
 msgid "Last Updated by"
 msgstr "Dernière mise à jour par"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__write_date
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_enable__write_date
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
+
+#. module: sale_medical_product_marketing_authorization
+#: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_search
+msgid "Limited Duration"
+msgstr "Durée limitée"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__message_main_attachment_id
@@ -231,6 +272,21 @@ msgstr "Pièce jointe principale"
 #: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_template_search_view
 msgid "Marketing Authorization Required"
 msgstr "Autorisation de mise sur le marché requise"
+
+#. module: sale_medical_product_marketing_authorization
+#. odoo-python
+#: code:addons/sale_medical_product_marketing_authorization/wizards/product_marketing_authorization_enable.py:0
+#, python-format
+msgid "Marketing Authorization enabled."
+msgstr "Autorisation de mise sur le marché activée."
+
+#. module: sale_medical_product_marketing_authorization
+#. odoo-python
+#: code:addons/sale_medical_product_marketing_authorization/wizards/product_marketing_authorization_enable.py:0
+#, python-format
+msgid "Marketing Authorization is already enabled on product '%s'."
+msgstr ""
+"L'autorisation de mise sur le marché est déjà activée pour le produit '%s'."
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.actions.act_window,name:sale_medical_product_marketing_authorization.product_marketing_authorization_action
@@ -248,7 +304,7 @@ msgstr "Erreur d'envoi du message"
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Messages"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_sale_order__missing_marketing_authorization_products
@@ -284,7 +340,7 @@ msgstr "Type de l'activité suivante"
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__notes
 #: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_form
 msgid "Notes"
-msgstr ""
+msgstr "Notes"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__message_needaction_counter
@@ -309,16 +365,18 @@ msgstr "Nombre de messages en échec d'envoi"
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__parent_id
 msgid "Parent"
-msgstr ""
+msgstr "Parent"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__period_ids
+#: model:ir.model.fields.selection,name:sale_medical_product_marketing_authorization.selection__product_marketing_authorization__duration_type__period
 #: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_form
 msgid "Periods"
 msgstr "Périodes"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model,name:sale_medical_product_marketing_authorization.model_product_template
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_enable__product_template_id
 msgid "Product"
 msgstr "Produit"
 
@@ -326,6 +384,17 @@ msgstr "Produit"
 #: model:ir.model,name:sale_medical_product_marketing_authorization.model_product_marketing_authorization
 msgid "Product Marketing Authorization"
 msgstr "Autorisation de mise sur le marché de produits"
+
+#. module: sale_medical_product_marketing_authorization
+#. odoo-python
+#: code:addons/sale_medical_product_marketing_authorization/models/product_marketing_authorization.py:0
+#, python-format
+msgid ""
+"Product Marketing Authorization '%s' is configured as illimited, so it "
+"should not have any period defined."
+msgstr ""
+"L'autorisation de mise sur le marché du produit '%s' est configurée comme "
+"illimitée, elle ne doit donc pas avoir de période définie."
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model,name:sale_medical_product_marketing_authorization.model_product_marketing_authorization_period
@@ -339,8 +408,14 @@ msgstr "Variante de produit"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__product_ids
+#: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_tree
 msgid "Products"
 msgstr "Produits"
+
+#. module: sale_medical_product_marketing_authorization
+#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__product_ids_str
+msgid "Products as Text"
+msgstr "Produits sous forme de texte"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__ref
@@ -361,11 +436,6 @@ msgstr "Bon de commande"
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__sequence
 msgid "Sequence"
 msgstr "Séquence"
-
-#. module: sale_medical_product_marketing_authorization
-#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__signature_date
-msgid "Signature Date"
-msgstr "Date de signature"
 
 #. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization_period__start_date
@@ -401,16 +471,6 @@ msgid "These products have no valid marketing authorization:"
 msgstr "Ces produits n'ont pas d'autorisation de mise sur le marché valide :"
 
 #. module: sale_medical_product_marketing_authorization
-#: model:ir.model.fields,field_description:sale_medical_product_marketing_authorization.field_product_marketing_authorization__name
-msgid "Title"
-msgstr "Titre"
-
-#. module: sale_medical_product_marketing_authorization
-#: model_terms:ir.ui.view,arch_db:sale_medical_product_marketing_authorization.product_marketing_authorization_search
-msgid "Title or Reference"
-msgstr "Titre ou référence"
-
-#. module: sale_medical_product_marketing_authorization
 #: model:ir.model.fields,help:sale_medical_product_marketing_authorization.field_product_marketing_authorization__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr "Type de l'activité-alerte sur l'enregistrement."
@@ -424,3 +484,14 @@ msgstr "Messages du site Web"
 #: model:ir.model.fields,help:sale_medical_product_marketing_authorization.field_product_marketing_authorization__website_message_ids
 msgid "Website communication history"
 msgstr "Historique des échanges sur le site Web"
+
+#. module: sale_medical_product_marketing_authorization
+#. odoo-python
+#: code:addons/sale_medical_product_marketing_authorization/wizards/product_marketing_authorization_enable.py:0
+#, python-format
+msgid ""
+"You cannot enable a Marketing Authorization for '%s' because it is a service "
+"product."
+msgstr ""
+"Vous ne pouvez pas activer une autorisation de mise sur marché pour '%s' car "
+"il s'agit d'un produit de service."
