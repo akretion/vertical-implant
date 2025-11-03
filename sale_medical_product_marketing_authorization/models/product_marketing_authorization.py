@@ -5,6 +5,7 @@
 from odoo import api, fields, models, Command, _
 from odoo.exceptions import ValidationError
 from odoo.tools.misc import format_date
+from textwrap import shorten
 
 
 class ProductMarketingAuthorization(models.Model):
@@ -16,7 +17,6 @@ class ProductMarketingAuthorization(models.Model):
 
     sequence = fields.Integer()
     active = fields.Boolean(default=True, tracking=True)
-    name = fields.Char(required=True, string="Title", tracking=True)
     company_id = fields.Many2one(
         'res.company', ondelete='cascade', required=True, index=True,
         default=lambda self: self.env.company, tracking=True)
@@ -29,8 +29,11 @@ class ProductMarketingAuthorization(models.Model):
         'product.product', string='Products', required=True, tracking=True,
         domain=[('marketing_authorization_required', '=', True)],
         check_company=True)
+    product_ids_str = fields.Char(compute="_compute_product_ids_str", string="Products as Text", store=True)
     country_ids = fields.Many2many(
         'res.country', string='Countries', required=True, tracking=True, copy=False)
+    # country_ids_str is store=False because country name is translatable
+    country_ids_str = fields.Char(compute="_compute_country_ids_str", string="Countries as Text", store=False)
     period_ids = fields.One2many(
         'product.marketing.authorization.period', 'parent_id',
         string='Periods', tracking=True, copy=False)
@@ -55,6 +58,22 @@ class ProductMarketingAuthorization(models.Model):
                     "Product Marketing Authorization '%s' is configured "
                     "as illimited, so it should not have any period defined.")
                     % auth.display_name)
+
+    @api.depends('product_ids.default_code', 'product_ids.name')
+    def _compute_product_ids_str(self):
+        for auth in self:
+            product_list = [p.default_code or p.name for p in auth.product_ids]
+            product_ids_str_full = ", ".join(product_list)
+            auth.product_ids_str = shorten(product_ids_str_full, 60, placeholder='...')
+
+    @api.depends('country_ids')
+    def _compute_country_ids_str(self):
+        country_id2name = {
+            c['id']: c['name'] for c in self.env['res.country'].search_read([], ['name'])}
+        for auth in self:
+            country_list = [country_id2name[c_id] for c_id in auth.country_ids.ids]
+            country_ids_str_full = ", ".join(country_list)
+            auth.country_ids_str = shorten(country_ids_str_full, 50, placeholder='...')
 
     @api.depends('period_ids.end_date', 'duration_type')
     def _compute_end_date(self):
@@ -90,6 +109,14 @@ class ProductMarketingAuthorization(models.Model):
                     }
                     tracking_value_ids.append(Command.create(vals))
         return updated_fields, tracking_value_ids
+
+    @api.depends('product_ids_str', 'country_ids_str')
+    def name_get(self):
+        res = []
+        for auth in self:
+            dname = f"🚦 {auth.product_ids_str} 🌐 {auth.country_ids_str}"
+            res.append((auth.id, dname))
+        return res
 
 
 class ProductMarketingAuthorizationPeriod(models.Model):
