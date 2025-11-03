@@ -17,6 +17,7 @@
         'security/group.xml',
         'security/ir_rule.xml',
         'security/ir.model.access.csv',
+        'wizards/product_marketing_authorization_enable_view.xml',
         'views/product.xml',
         'views/product_marketing_authorization.xml',
         'views/sale_order.xml',

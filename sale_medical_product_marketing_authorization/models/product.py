@@ -9,18 +9,8 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     marketing_authorization_required = fields.Boolean(
-        string='Marketing Authorization Required',
-        compute='_compute_marketing_authorization_required',
-        store=True, readonly=False, precompute=True,
+        string='Marketing Authorization Required', readonly=True,
         help="If enabled, this product will require a marketing authorization to be sold.")
-
-    @api.depends('type')
-    def _compute_marketing_authorization_required(self):
-        for product in self:
-            if product.type in ('product', 'consu'):
-                product.marketing_authorization_required = True
-            else:
-                product.marketing_authorization_required = False
 
     def show_marketing_authorizations(self):
         self.ensure_one()

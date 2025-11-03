@@ -44,12 +44,6 @@ class ProductMarketingAuthorization(models.Model):
     end_date = fields.Date(compute='_compute_end_date', store=True)
     notes = fields.Html(copy=False)
 
-    _sql_constraints = [
-        (
-            'name_uniq',
-            'unique(name)',
-            'A marketing authorization already exists with the same title.')]
-
     @api.constrains('duration_type', 'period_ids')
     def _check_product_marketing_authorization(self):
         for auth in self:

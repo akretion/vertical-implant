@@ -1,0 +1,1 @@
+from . import product_marketing_authorization_enable
