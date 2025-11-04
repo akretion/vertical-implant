@@ -1,8 +1,9 @@
 [project]
 name = "odoo-addons-akretion-vertical-implant"
-version = "18.0.20250610.0"
+version = "18.0.20251104.0"
 dependencies = [
     "odoo-addon-sale_from_hospital_stock==18.0.*",
+    "odoo-addon-sale_medical_product_marketing_authorization==18.0.*",
 ]
 classifiers=[
     "Programming Language :: Python",
