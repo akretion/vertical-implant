@@ -36,7 +36,8 @@
     <field name="inherit_id" ref="product.product_template_only_form_view"/>
     <field name="arch" type="xml">
         <div name="button_box" position="inside">
-            <button type="object" name="show_marketing_authorizations" string="Marketing Authorizations" class="oe_stat_button" icon="fa-gavel" attrs="{'invisible': [('marketing_authorization_required', '=', False)]}"/>
+            <button type="object" name="show_marketing_authorizations" string="Marketing Authorizations" class="oe_stat_button" icon="fa-gavel" invisible="not marketing_authorization_required"/>
+
         </div>
     </field>
 </record>
@@ -46,7 +47,7 @@
     <field name="inherit_id" ref="product.product_normal_form_view"/>
     <field name="arch" type="xml">
         <div name="button_box" position="inside">
-            <button type="object" name="show_marketing_authorizations" string="Marketing Authorizations" class="oe_stat_button" icon="fa-gavel" attrs="{'invisible': [('marketing_authorization_required', '=', False)]}"/>
+            <button type="object" name="show_marketing_authorizations" string="Marketing Authorizations" class="oe_stat_button" icon="fa-gavel" invisible="not marketing_authorization_required"/>
         </div>
     </field>
 </record>
