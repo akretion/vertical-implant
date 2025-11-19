@@ -28,12 +28,15 @@ class ResPartner(models.Model):
     def _prepare_hospital_stock_location_vals(self):
         self.ensure_one()
         company = self.env.company
-        wh = self.env['stock.warehouse'].search([('company_id', '=', company.id)], limit=1)
-        if not wh:
-            raise UserError(self.env._("There is no warehouse in company %s.") % company.display_name)
+        parent_location = company.deposit_main_location_id
+        if not company.deposit_main_location_id:
+            wh = self.env['stock.warehouse'].search([('company_id', '=', company.id)], limit=1)
+            if not wh:
+                raise UserError(self.env._("There is no warehouse in company %s.") % company.display_name)
+            parent_location = wh.view_location_id
         vals = {
             'name': self.env._('Deposit %s') % self.display_name,
-            'location_id': wh.view_location_id.id,
+            'location_id': parent_location.id,
             'detailed_usage': 'deposit',
             'usage': 'internal',
             'company_id': company.id,

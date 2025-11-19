@@ -10,3 +10,6 @@ class ResConfigSettings(models.TransientModel):
 
     deposit_stock_out_type_id = fields.Many2one(
         related='company_id.deposit_stock_out_type_id', readonly=False)
+    deposit_main_location_id = fields.Many2one(
+        related="company_id.deposit_main_location_id", readonly=False
+    )

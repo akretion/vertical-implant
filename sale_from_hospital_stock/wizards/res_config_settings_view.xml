@@ -14,6 +14,9 @@
                 <setting id="deposit_picking_type" string="Picking Type for Hospital deposit deliveries">
                     <field name="deposit_stock_out_type_id" context="{'default_code': 'outgoing', 'default_use_create_lots': False}"/>
                 </setting>
+                <setting id="deposit_main_location_id" string="Parent location for deposit locations">
+                    <field name="deposit_main_location_id"/>
+                </setting>
             </block>
         </block>
     </field>
