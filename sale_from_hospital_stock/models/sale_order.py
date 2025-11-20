@@ -75,38 +75,31 @@ class SaleOrder(models.Model):
             picking_origin = self.client_order_ref
         else:
             picking_origin = self.name
-        # If we find rules to go to the partner deposit, use it, else, we'll have
-        # a default/simple delivery order
-        deposit_rule = self.route_id.rule_ids.filtered(lambda rule: rule.location_dest_id == self.partner_id.deposit_location_id)
-        for l in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'consu'):
-            move_ids.append(Command.create({
-                'company_id': company_id,
-                'product_id': l.product_id.id,
-                'product_uom_qty': l.product_uom_qty,
-                'product_uom': l.product_uom.id,
-                'name': l.product_id.display_name,
-                'location_id': deposit_rule.location_src_id.id or lot_stock_id,
-                'location_dest_id': deposit_location.id,
-                'warehouse_id': self.warehouse_id.id,
-                'origin': self.env._('Refill Deposit %s') % self.name,
-                "group_id": self.procurement_group_id.id,
-                "procure_method": deposit_rule.procure_method or "make_to_stock",
-                "route_ids": [Command.set(self.route_id.ids)],
-                }))
-        picking = spo.create({
-            'company_id': company_id,
+
+        refill_group = self.env["procurement.group"].create({
+            'name': f"{self.name}-refill",
+            'move_type': "direct",
+            'refill_sale_id': self.id,
             'partner_id': self.partner_shipping_id.id,
-            "sale_id": False,
-            "refill_sale_id": self.id,
-            'origin': picking_origin,
-            "move_type": "direct",
-            'location_id': deposit_rule.location_src_id.id or lot_stock_id,
-            'location_dest_id': deposit_location.id,
-            'picking_type_id': deposit_rule.picking_type_id.id or self.warehouse_id.out_type_id.id,
-            'move_ids': move_ids,
-            "group_id": self.procurement_group_id.id,
-            })
-        picking.action_confirm()
+        })
+ 
+        procurements = []
+        for line in self.order_line.filtered(lambda x: not x.display_type and x.product_id.type == 'consu'):
+            values = {
+                'group_id': refill_group,
+                'route_ids': line.route_id,
+                'warehouse_id': line.warehouse_id,
+                'partner_id': self.partner_shipping_id.id,
+                'location_final_id': deposit_location,
+                'product_description_variants': line.with_context(lang=self.partner_id.lang)._get_sale_order_line_multiline_description_variants(),
+                'company_id': self.company_id,
+                'sequence': line.sequence,
+                'never_product_template_attribute_value_ids': line.product_no_variant_attribute_value_ids,
+            }
+            procurements.append(self.env['procurement.group'].Procurement(
+                line.product_id, line.product_uom_qty, line.product_uom, deposit_location,
+                line.product_id.display_name, picking_origin, self.company_id, values))
+        self.env['procurement.group'].run(procurements)
 
     def _action_confirm(self):
         for order in self:

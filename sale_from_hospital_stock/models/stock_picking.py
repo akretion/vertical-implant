@@ -8,7 +8,7 @@ from odoo import api, fields, models
 class StockPicking(models.Model):
     _inherit = 'stock.picking'
 
-    refill_sale_id = fields.Many2one('sale.order', string='Sale Order which Triggers the Refill', check_company=True, readonly=True)
+    refill_sale_id = fields.Many2one('sale.order', string='Sale Order which Triggers the Refill', check_company=True, related="group_id.refill_sale_id", store=True)
     # for delivery report
     source_sale_id = fields.Many2one('sale.order', compute='_compute_source_sale_id')
 

@@ -20,8 +20,7 @@ class ResPartner(models.Model):
             deposit_location = False
             if not partner.parent_id:
                 deposit_route = self.env['stock.route'].search([('partner_id', '=', partner.id), ('company_id', '=', self.env.company.id), ('detailed_type', '=', 'ship_from_deposit')], limit=1)
-                if deposit_route and deposit_route.rule_ids and deposit_route.rule_ids[0].location_src_id and deposit_route.rule_ids[0].location_src_id.detailed_usage == 'deposit':
-                    deposit_location = deposit_route.rule_ids[0].location_src_id
+                deposit_location = deposit_route.rule_ids.location_src_id.filtered(lambda loc: loc.detailed_usage == 'deposit')
             partner.deposit_route_id = deposit_route
             partner.deposit_location_id = deposit_location
 
@@ -44,9 +43,76 @@ class ResPartner(models.Model):
             }
         return vals
 
+    def _prepare_refill_rule_vals_list(self, deposit_location):
+        wh = self.env["stock.warehouse"].search(
+            [("company_id", "=", self.env.company.id)], limit=1
+        )
+        # The main rule always exists
+        refill_rule_main_vals = self._prepare_refill_rule_first_step_vals(deposit_location, wh)
+        rule_vals_list = [refill_rule_main_vals]
+        # second step is optional (only in case of pick+ship
+        refill_rule_second_step_vals = self._prepare_refill_rule_second_step(deposit_location, wh)
+        if refill_rule_second_step_vals:
+            rule_vals_list.append(refill_rule_second_step_vals)
+        # third step is optional (onlu in case of pick+pack+ship)
+        refill_rule_third_step_vals = self._prepare_refill_rule_third_step(deposit_location, wh)
+        if refill_rule_third_step_vals:
+            rule_vals_list.append(refill_rule_third_step_vals)
+        return rule_vals_list
+
+    def _prepare_refill_rule_first_step_vals(self, deposit_location, wh):
+        refill_rule_deposit_vals = {
+            "name": self.env._("Refill deposit %(partner_name)s", partner_name=self.display_name),
+            "company_id": self.env.company.id,
+            "warehouse_id": wh.id,
+            "action": "pull",
+            "location_src_id": wh.lot_stock_id.id,
+            "location_dest_id": deposit_location.id,
+            "procure_method": "make_to_stock",
+        }
+        if wh.delivery_steps == "ship_only":
+            refill_rule_deposit_vals["picking_type_id"] = wh.out_type_id.id
+        else:
+            refill_rule_deposit_vals["picking_type_id"] = wh.pick_type_id.id
+        return refill_rule_deposit_vals
+
+    def _prepare_refill_rule_second_step(self, deposit_location, wh):
+        second_step_vals = False
+        if wh.delivery_steps == "pick_ship": 
+            second_step_vals = {
+                "name": self.env._("output => deposit %(partner_name)s", partner_name=self.name),
+                "company_id": self.env.company.id,
+                "warehouse_id": wh.id,
+                "action": "push",
+                "location_src_id": wh.wh_output_stock_loc_id.id,
+                "location_dest_id": deposit_location.id,
+                "picking_type_id": wh.out_type_id.id,
+            }
+        # in case of pick_pack_ship, the second rule is in fact fully generic
+        # and should already be available and global, that is why we do not create it
+        # (output => packing)
+        return second_step_vals
+
+    def _prepare_refill_rule_third_step(self, deposit_location, wh):
+        third_step_vals = False
+        if wh.delivery_steps == "pick_pack_ship": 
+            third_step_vals = {
+                "name": self.env._("output => deposit %(partner_name)s", partner_name=self.name),
+                "company_id": self.env.company.id,
+                "warehouse_id": wh.id,
+                "action": "push",
+                "location_src_id": wh.wh_pack_stock_loc_id.id,
+                "location_dest_id": deposit_location.id,
+                "picking_type_id": wh.out_type_id.id,
+            }
+        return third_step_vals
+
+            
+
+
     def _prepare_hospital_stock_route_vals(self, deposit_location):
         company = self.env.company
-        pull_rule_deposit = {
+        rules_vals_list = [{
             'name': self.env._('From %s to Customers') % self.display_name,
             'company_id': company.id,
             'warehouse_id': False,
@@ -56,12 +122,13 @@ class ResPartner(models.Model):
             'procure_method': 'make_to_stock',
             'picking_type_id': company.deposit_stock_out_type_id.id,
             'partner_address_id': self.id,
-            }
+            }]
+        rules_vals_list += self._prepare_refill_rule_vals_list(deposit_location)
         deposit_route_vals = {
             'name': self.env._('Ship from %s') % deposit_location.display_name,
             'company_id': company.id,
             'sequence': 40,
-            'rule_ids': [Command.create(pull_rule_deposit)],
+            'rule_ids': [Command.create(vals) for vals in rules_vals_list],
             'product_selectable': False,
             'product_categ_selectable': False,
             'warehouse_selectable': False,
