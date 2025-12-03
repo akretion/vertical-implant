@@ -32,6 +32,9 @@
                 <field name="refill_picking_count" widget="statinfo" string="Refill"/>
             </button>
         </div>
+        <xpath expr="//field[@name='order_line']/list/field[@name='route_id']" position="attributes">
+            <attribute name="domain">[('partner_id', 'in', (parent.commercial_partner_id, False)), ('company_id', 'in', (company_id, False)), ('sale_selectable', '=', True)]</attribute>
+        </xpath>
     </field>
 </record>
 
