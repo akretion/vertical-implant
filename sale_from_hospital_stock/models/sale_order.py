@@ -102,10 +102,11 @@ class SaleOrder(models.Model):
         self.env['procurement.group'].run(procurements)
 
     def _action_confirm(self):
+        res = super()._action_confirm()
         for order in self:
             if order.route_detailed_type == 'ship_from_deposit' and order.refill_deposit:
                 order._generate_refill_picking()
-        return super()._action_confirm()
+        return res
 
     def _action_cancel(self):
         for order in self:
