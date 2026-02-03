@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
 
     # inherit the field of sale_order_route
     route_id = fields.Many2one(
-        compute="_compute_route_id", store=True, readonly=False,
+        compute="_compute_route_id", store=True, readonly=False, precompute=True,
         domain="[('partner_id', 'in', (commercial_partner_id, False)), ('company_id', 'in', (company_id, False)), ('sale_selectable', '=', True)]")
     route_detailed_type = fields.Selection(related='route_id.detailed_type', store=True)
     refill_deposit = fields.Boolean(
