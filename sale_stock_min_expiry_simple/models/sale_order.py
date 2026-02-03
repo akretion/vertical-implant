@@ -13,13 +13,16 @@ class SaleOrder(models.Model):
         string='Minimum Expiry', help="Minimum expiry in days.",
         store=True, readonly=False, precompute=True, tracking=True)
 
+    def order_product_expiry_min_days(self):
+        product_expiry_min_days = False
+        if self.partner_id and self.company_id:
+            product_expiry_min_days = self.with_company(self.company_id.id).partner_id.commercial_partner_id.product_expiry_min_days or self.company_id.product_expiry_min_days
+        return product_expiry_min_days
+
     @api.depends('partner_id', 'company_id')
     def _compute_product_expiry_min_days(self):
         for order in self:
-            product_expiry_min_days = False
-            if order.partner_id and order.company_id:
-                product_expiry_min_days = order.with_company(order.company_id.id).partner_id.commercial_partner_id.product_expiry_min_days or order.company_id.product_expiry_min_days
-            order.product_expiry_min_days = product_expiry_min_days
+            order.product_expiry_min_days = order.order_product_expiry_min_days()
 
     _sql_constraints = [
         (
