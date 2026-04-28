@@ -4,7 +4,7 @@
 
 {
     'name': 'Sale Stock Min Expiry Simple',
-    'version': '16.0.1.0.0',
+    'version': "18.0.1.0.0",
     'category': 'Warehouse',
     'license': 'AGPL-3',
     'summary': 'Per-order configuration of a minimum expiry delay',
@@ -19,6 +19,7 @@
         'views/stock_picking.xml',
         'views/res_partner.xml',
         'views/stock_picking_type.xml',
+        'wizards/res_config_settings_view.xml',
     ],
-    'installable': False,
+    'installable': True,
 }

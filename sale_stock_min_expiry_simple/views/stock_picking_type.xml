@@ -12,7 +12,7 @@
         <field name="model">stock.picking.type</field>
         <field name="inherit_id" ref="stock.view_picking_type_form"/>
         <field name="arch" type="xml">
-                <field name="show_reserved" position="after">
+                <field name="reservation_method" position="after">
                         <field name="min_expiry_raise"/>
                 </field>
         </field>

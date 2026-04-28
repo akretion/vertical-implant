@@ -12,9 +12,9 @@
     <field name="model">stock.picking</field>
     <field name="inherit_id" ref="stock.view_picking_form"/>
     <field name="arch" type="xml">
-        <xpath expr="//field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
-            <field name="product_use_expiry_date" invisible="1"/>
-            <field name="product_expiry_min_days" optional="hide" attrs="{'invisible': [('product_use_expiry_date', '=', False)], 'readonly': ['|', '&amp;', ('state', '!=', 'draft'), ('additional', '=', False), ('move_lines_count', '&gt;', 0)]}"/>
+        <xpath expr="//field[@name='move_ids_without_package']/list/field[@name='product_id']" position="after">
+            <field name="product_use_expiry_date" column_invisible="1" />
+            <field name="product_expiry_min_days" optional="hide" invisible="not product_use_expiry_date" readonly="state != 'draft' and not additional and move_lines_count &gt; 0"/>
         </xpath>
     </field>
 </record>
